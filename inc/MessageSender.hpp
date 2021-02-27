@@ -1,0 +1,6 @@
+#ifndef _MESSAGE_SENDER_HPP_
+#define _MESSAGE_SENDER_HPP_
+
+
+
+#endif // _MESSAGE_SENDER_HPP_
