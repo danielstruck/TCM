@@ -17,7 +17,7 @@ void loop() {
   // check termal range
   temperatureCompare();
   
-  if (!temperatureInsideBoundries) {
+  if (!isTemperatureInsideBoundries()) {
     // TODO message sender flag
   }
 

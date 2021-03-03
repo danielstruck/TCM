@@ -4,7 +4,7 @@ typedef struct {
   char upper, lower;
 } Boundry;
 
-Boundry defineBoundry(char upper, char lower) {
+struct Boundry defineBoundry(char upper, char lower) {
   Boundry b;
   b.upper = upper;
   b.lower = lower;
