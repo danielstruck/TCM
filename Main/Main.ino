@@ -1,13 +1,10 @@
-//#include "../inc/Main.hpp"
-//#include "Bounries.ino"
-//#include "HWIO.ino"
-//#include "Initializer.ino"
-//#include "Logger.ino"
-//#include "MessageSender.ino"
-//#include "Profile.ino"
-//#include "Temperature.ino"
-
-
+#include "Boundry.cpp"
+#include "HWIO.cpp"
+#include "Initializer.cpp"
+#include "Logger.cpp"
+#include "MessageSender.cpp"
+#include "Profile.cpp"
+#include "TemperatureDetection.cpp"
 
 void setup() {
   
