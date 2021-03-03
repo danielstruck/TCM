@@ -1,3 +1,4 @@
+namespace Boundry {
 //#include "../inc/Bounderies.hpp"
 
 //static int profileUpper;
@@ -5,4 +6,6 @@
 
 void setBoundries() {
 	// TODO
+}
+
 }

@@ -1,3 +1,5 @@
+namespace TemperatureDetection {
+
 //#include "../inc/TemperatureDetection.hpp"
 
 static int temperatureChamber;
@@ -9,4 +11,6 @@ void temperatureCompare() {
 
 bool isTemperatureInsideBoundries() {
   return temperatureInsideBoundries;
+}
+
 }

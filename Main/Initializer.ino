@@ -1,3 +1,5 @@
+namespace Initalizer {
+
 //#include "../inc/Initializer.hpp"
 
 static bool textConnectionSuccess;
@@ -6,4 +8,6 @@ static bool tempPollingConnectionSuccess;
 
 void startUp() {
 	// TODO
+}
+
 }

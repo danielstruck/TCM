@@ -1,3 +1,5 @@
+namespace Profile {
+
 //#include "../inc/Profile.hpp"
 
 typedef struct {
@@ -26,4 +28,6 @@ void incrementProfile() {
 
 void selectProfile() {
 	// TODO
+}
+
 }

@@ -1,3 +1,5 @@
+namespace MessageSender {
+
 //#include "../inc/MessageSender.hpp"
 
 #define FONA_PS A3
@@ -48,4 +50,6 @@ void chooseMessage() {
 
 void operation() {
 	// TODO
+}
+
 }
