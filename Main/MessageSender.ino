@@ -1,4 +1,6 @@
-#include "../inc/MessageSender.hpp"
+namespace MessageSender {
+
+//#include "../inc/MessageSender.hpp"
 
 
 
@@ -45,4 +47,6 @@ void chooseMessage() {
 
 void operation() {
 	// TODO
+}
+
 }

@@ -1,4 +1,5 @@
-#define FONA_PS A3
+
+namespace HWIO {
 
 bool profileBtnPressed() {
   
@@ -6,4 +7,6 @@ bool profileBtnPressed() {
 
 bool resetBtnPressed() {
   
+}
+
 }
