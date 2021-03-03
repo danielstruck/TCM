@@ -3,6 +3,10 @@
 static char errorStatus[32];
 static char messageText[32];
 
+static char numbers[8][10] = {
+  
+};
+
 void sendText() {
 	// TODO
 }
