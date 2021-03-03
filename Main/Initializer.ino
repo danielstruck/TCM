@@ -1,4 +1,4 @@
-#include "../inc/Initializer.hpp"
+//#include "../inc/Initializer.hpp"
 
 static bool textConnectionSuccess;
 static bool memoryConnectionSuccess;

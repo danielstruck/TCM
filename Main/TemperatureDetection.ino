@@ -1,4 +1,4 @@
-#include "../inc/TemperatureDetection.hpp"
+//#include "../inc/TemperatureDetection.hpp"
 
 static int temperatureChamber;
 static bool temperatureInsideBoundries;
