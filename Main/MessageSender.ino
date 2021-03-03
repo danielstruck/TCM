@@ -1,6 +1,6 @@
 #include "../inc/MessageSender.hpp"
 
-#define FONA_PS A3
+
 
 static char errorStatus[32];
 static char messageText[32];
@@ -35,15 +35,12 @@ void sendText() {
 void chooseMessage() {
 	// Look at fizzbuzz video to add text to existing string efficiently => not exactly what i want
  uint16_t vbat;
- if (temperatureCompare == FALSE){
+ if (temperatureInsideBoundries == FALSE){
   messageText = "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d";
  }
  if (FONA_PS == 0){
   messageText = "WARNING: Power outage. Current Battery %: %d";
  }
-
-  
- 
 }
 
 void operation() {
