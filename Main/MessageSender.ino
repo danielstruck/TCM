@@ -22,6 +22,10 @@ enum{
   deviceReset;
 } events;
 
+static char numbers[8][10] = {
+  
+};
+
 void sendText() {
 	 // send an SMS!
    fona.sendSMS(sendTo, messageText) //send to => phone numbers
@@ -43,5 +47,5 @@ void chooseMessage() {
 }
 
 void operation() {
-	// Can't remember why i thought i needed this function => use to activate errorLEDs?
+	// TODO
 }
