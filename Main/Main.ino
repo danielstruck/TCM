@@ -22,6 +22,7 @@ void loop() {
   }
 
   // TODO daniel log temperature
+  logData();
 
   // TODO daniel handle power outage
   

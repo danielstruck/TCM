@@ -1,0 +1,7 @@
+bool profileBtnPressed() {
+  
+}
+
+bool resetBtnPressed() {
+  
+}
