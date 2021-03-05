@@ -1,13 +1,9 @@
-//namespace Initalizer {
+#include "inc/Initializer.hpp"
 
-//#include "../inc/Initializer.hpp"
-
-static bool textConnectionSuccess;
-static bool memoryConnectionSuccess;
-static bool tempPollingConnectionSuccess;
+//static bool textConnectionSuccess;
+//static bool memoryConnectionSuccess;
+//static bool tempPollingConnectionSuccess;
 
 void startUp() {
 	// TODO
 }
-
-//}

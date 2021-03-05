@@ -1,10 +1,11 @@
-#include "Boundry.cpp"
-#include "HWIO.cpp"
-#include "Initializer.cpp"
-#include "Logger.cpp"
-#include "MessageSender.cpp"
-#include "Profile.cpp"
-#include "TemperatureDetection.cpp"
+#include "inc/Main.hpp"
+#include "inc/Boundry.hpp"
+#include "inc/HWIO.hpp"
+#include "inc/Initializer.hpp"
+#include "inc/Logger.hpp"
+#include "inc/MessageSender.hpp"
+#include "inc/Profile.hpp"
+#include "inc/TemperatureDetection.hpp"
 
 void setup() {
   

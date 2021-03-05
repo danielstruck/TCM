@@ -1,12 +1,10 @@
 #include "Adafruit_FONA.h"
+#include "inc/MessageSender.hpp"
+#include "inc/HWIO.hpp"
 
-#define FONA_PS  (A3)
-#define FONA_RST (4)
-
-static char errorStatus[32];
-static char *messageText;
-//static char sendTo[8][16] = {"7202449051", "2246160041"} How to send to two numbers => Loop that uses a different char every time?
-Adafruit_FONA_3G fona = Adafruit_FONA_3G(FONA_RST);
+char errorStatus[32];
+char *messageText;
+char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?
 
 enum errors{
   badTemp = 0, //will need return of temperature compare function to activate
@@ -36,13 +34,13 @@ void sendText() {
 
 void chooseMessage() {
 	// Look at fizzbuzz video to add text to existing string efficiently => not exactly what i want
- uint16_t vbat;
+  uint16_t vbat;
 // if (temperatureInsideBoundries == FALSE){
 //  messageText = "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d";
 // }
- if (FONA_PS == 0){
-  messageText = "WARNING: Power outage. Current Battery %: %d";
- }
+  if (FONA_PS == 0){
+    messageText = "WARNING: Power outage. Current Battery %: %d";
+  }
 
   
  
