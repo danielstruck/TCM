@@ -5,8 +5,8 @@
 
 extern char *messageText;
 //extern char sendTo[8][16]; // How to send to two numbers => Loop that uses a different char every time?
-extern long timestamp;
-extern long errorDelay;
+extern unsigned long timestamp;
+extern unsigned long errorDelay;
 extern static char* [10];
 
 extern enum events;
