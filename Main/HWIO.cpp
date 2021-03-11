@@ -1,7 +1,8 @@
 #include "inc/HWIO.hpp"
 #include "Adafruit_FONA.h"
 
-Adafruit_FONA_3G fona = Adafruit_FONA_3G(FONA_RST);
+Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
+
 
 // returns true if the profile button is pressed 
 bool profileBtnPressed() {
@@ -39,7 +40,7 @@ bool isPowerOK() {
 // returns -1 on failure, current battery percentage otherwise
 uint16_t getBatteryPercentage() {
   uint16_t vPer;
-  if (fona.getBattPercent(&vPer) {
+  if (fona.getBattPercent(&vPer)) {
     vPer = -1;
   }
   return vPer;

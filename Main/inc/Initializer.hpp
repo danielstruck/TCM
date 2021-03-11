@@ -2,10 +2,8 @@
 #define _INITIALIZER_HPP_
 
 
-extern bool textConnectionSuccess;
-extern bool memoryConnectionSuccess;
-extern bool tempPollingConnectionSuccess;
+void setUPLogger();
 
-void startUp();
+void setupPins();
 
 #endif // _INITIALIZER_HPP_
