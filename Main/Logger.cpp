@@ -1,8 +1,13 @@
 #include "inc/Logger.hpp"
 
-//char errorStatus[32];
-// int temperatureChamber;
+//SD.begin(sspin);
+//SD.open(filepath, writingMode);
 
-void logData() {
-	// TODO
+void logData(int temp) {
+ //file.println();d
+ //file.close();
+}
+
+void getTime(){
+  
 }
