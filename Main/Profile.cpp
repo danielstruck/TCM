@@ -10,6 +10,10 @@ Boundry profile[] = {
 
 char currentProfile = 0;
 
+struct Boundry{
+  char upper, lower;
+};
+
 struct Boundry defineBoundry(char upper, char lower) {
   Boundry b;
   b.upper = upper;
@@ -23,4 +27,5 @@ void incrementProfile() {
 
 void selectProfile() {
 	// TODO
+ 
 }
