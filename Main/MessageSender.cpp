@@ -3,8 +3,8 @@
 #include "inc/HWIO.hpp"
 
 char *messageText;
-long timestamp;
-long errorDelay;
+unsigned long timestamp;
+unsigned long errorDelay;
 
 //char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?
 
