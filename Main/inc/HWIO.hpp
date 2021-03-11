@@ -22,8 +22,32 @@
 
 extern Adafruit_FONA_3G fona;
 
+
+// returns true if the profile button is pressed 
 bool profileBtnPressed();
 
+// returns true if the reset button is pressed
 bool resetBtnPressed();
+
+// returns true if the arduino is recieving power from the Fona
+bool isPowerOK();
+
+// returns -1 on failure, current battery percentage otherwise
+uint16_t getBatteryPercentage();
+
+void turnFonaOff();
+void turnFonaOn();
+
+void setErrorLEDOn();
+void setErrorLEDOff();
+
+void setProfile1LEDOn()
+void setProfile1LEDOff();
+void setProfile2LEDOn();
+void setProfile2LEDOff();
+void setProfile3LEDOn();
+void setProfile3LEDOff();
+void setProfile4LEDOn()
+void setProfile4LEDOff();
 
 #endif // _HWIO_HPP_
