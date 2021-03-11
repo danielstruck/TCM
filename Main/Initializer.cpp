@@ -7,3 +7,7 @@
 void startUp() {
 	// TODO
 }
+
+void setUPLogger(){
+  
+}
