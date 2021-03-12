@@ -1,7 +1,6 @@
 #include "inc/Initializer.hpp"
 #include "inc/HWIO.hpp"
 
-#include <SoftwareSerial.h>
 
 
 uint8_t type;

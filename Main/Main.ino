@@ -22,6 +22,8 @@ void setup() {
   setLEDs(1, 0, 0, 0, 0);
 
   setupInitialProfile();
+  
+  setLEDs(0, 0, 0, 0, 0);
 }
 
 void loop() {

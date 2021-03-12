@@ -2,6 +2,7 @@
 #define _HWIO_HPP_
 
 #include "Adafruit_FONA.h"
+#include <SoftwareSerial.h>
 
 #define FONA_TX (0)
 #define FONA_RX (1)

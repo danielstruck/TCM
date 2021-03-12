@@ -1,5 +1,6 @@
 #include "inc/HWIO.hpp"
 #include "Adafruit_FONA.h"
+#include <SoftwareSerial.h>
 
 Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
