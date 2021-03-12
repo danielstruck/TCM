@@ -2,6 +2,8 @@
 #include "Adafruit_FONA.h"
 
 Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
+SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
+SoftwareSerial *fonaSerial = &fonaSS;
 
 
 // returns true if the profile button is pressed 
@@ -51,6 +53,10 @@ void turnFonaOff() {
 }
 void turnFonaOn() {
   digitalWrite(PIN_FONA_KEY, LOW);
+  while (!fona.available()) {
+    while (!Serial);
+    Serial.write("Fona unavailable \n");
+  }
 }
 
 void setErrorLEDOn() {
@@ -86,4 +92,21 @@ void setProfile4LEDOn() {
 }
 void setProfile4LEDOff() {
   digitalWrite(PIN_LED4, LOW);
+}
+
+void setLEDs(int errorLED, int prof1, int prof2, int prof3, int prof4) {
+  if (errorLED == 1)       setErrorLEDOn();
+  else if (errorLED == 0)  setErrorLEDOff();
+  
+  if (prof1 == 1)      setProfile1LEDOn();
+  else if (prof1 == 0) setProfile1LEDOff();
+  
+  if (prof2 == 1)      setProfile2LEDOn();
+  else if (prof2 == 0) setProfile2LEDOff();
+  
+  if (prof3 == 1)      setProfile3LEDOn();
+  else if (prof3 == 0) setProfile3LEDOff();
+  
+  if (prof4 == 1)      setProfile4LEDOn();
+  else if (prof4 == 0) setProfile4LEDOff();
 }

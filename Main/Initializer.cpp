@@ -3,46 +3,27 @@
 
 #include <SoftwareSerial.h>
 
-#define FONA_TX 0
-#define FONA_RX 1
 
 uint8_t type;
 
-SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
-SoftwareSerial *fonaSerial = &fonaSS;
+
+void setupInitialProfile() {
+  
+}
 
 void setupFona() {
+  turnFonaOn();
+  
+  while (!Serial);
   fonaSerial->begin(4800);
-  if (! fona.begin(*fonaSerial)) {
+  if (!fona.begin(*fonaSerial)) {
     Serial.println(F("Couldn't find FONA"));
     while (1);
   }
   type = fona.type();
   Serial.println(F("FONA is OK"));
-  Serial.print(F("Found "));
-  switch (type) {
-    case FONA800L:
-      Serial.println(F("FONA 800L")); break;
-    case FONA800H:
-      Serial.println(F("FONA 800H")); break;
-    case FONA808_V1:
-      Serial.println(F("FONA 808 (v1)")); break;
-    case FONA808_V2:
-      Serial.println(F("FONA 808 (v2)")); break;
-    case FONA3G_A:
-      Serial.println(F("FONA 3G (American)")); break;
-    case FONA3G_E:
-      Serial.println(F("FONA 3G (European)")); break;
-    default: 
-      Serial.println(F("???")); break;
-  }
   
-  // Print module IMEI number.
-  char imei[16] = {0}; // MUST use a 16 character buffer for IMEI!
-  uint8_t imeiLen = fona.getIMEI(imei);
-  if (imeiLen > 0) {
-    Serial.print("Module IMEI: "); Serial.println(imei);
-  }
+  turnFonaOff();
 }
 
 void setupLogger(){

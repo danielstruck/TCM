@@ -9,11 +9,19 @@
 
 
 void setup() {
+  setLEDs(0, 1, 1, 1, 1);
   Serial.begin(115200);
+  setLEDs(0, 0, 1, 1, 1);
   delay(5000);
+  setLEDs(0, 1, 0, 1, 1);
   setupFona();
+  setLEDs(0, 0, 0, 1, 1);
   setupPins();
+  setLEDs(0, 1, 1, 0, 1);
   setupLogger();
+  setLEDs(1, 0, 0, 0, 0);
+
+  setupInitialProfile();
 }
 
 void loop() {
