@@ -6,6 +6,7 @@ char *messageText;
 unsigned long timestamp;
 unsigned long errorDelay;
 
+
 //char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?
 
 // make message for when profile is changed
@@ -25,7 +26,12 @@ const char *messages[] = {
 void sendText() {
    //char *sendTo = "";
 	 // send an SMS!
-   fona.sendSMS("7202449051", messageText); //send to => phone numbers
+   static int counter = 0;
+   counter++;
+   if (counter ==  1)
+    fona.sendSMS("7202449051", messageText); //send to => phone numbers
+   else if (counter == 1000)
+    counter = 0;
 }
 
 void chooseMessage(int eventNum) {
