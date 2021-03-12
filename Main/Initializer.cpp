@@ -2,6 +2,12 @@
 #include "inc/HWIO.hpp"
 
 #include <SoftwareSerial.h>
+
+#define FONA_TX 0
+#define FONA_RX 1
+
+uint8_t type;
+
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
 SoftwareSerial *fonaSerial = &fonaSS;
 
