@@ -41,13 +41,13 @@ void turnFonaOn();
 void setErrorLEDOn();
 void setErrorLEDOff();
 
-void setProfile1LEDOn()
+void setProfile1LEDOn();
 void setProfile1LEDOff();
 void setProfile2LEDOn();
 void setProfile2LEDOff();
 void setProfile3LEDOn();
 void setProfile3LEDOff();
-void setProfile4LEDOn()
+void setProfile4LEDOn();
 void setProfile4LEDOff();
 
 #endif // _HWIO_HPP_

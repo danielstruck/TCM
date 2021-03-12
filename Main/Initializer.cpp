@@ -1,7 +1,7 @@
 #include "inc/Initializer.hpp"
 #include "inc/HWIO.hpp"
 
-void setUPLogger(){
+void setupLogger(){
   
 }
 

@@ -1,7 +1,7 @@
 #ifndef _PROFILE_HPP_
 #define _PROFILE_HPP_
 
-extern struct Boundry;
+struct Boundry;
 
 extern Boundry profile[];
 

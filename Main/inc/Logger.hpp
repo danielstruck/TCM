@@ -2,8 +2,8 @@
 #define _LOGGER_HPP_
 
 //char errorStatus[32];
-extern int temperatureChamber;
+// extern int temperatureChamber;
 
-void logData();
+void logData(int temp);
 
 #endif // _LOGGER_HPP_

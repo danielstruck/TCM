@@ -1,6 +1,6 @@
 #include "inc/TemperatureDetection.hpp"
 
-//static int temperatureChamber;
+int temperatureChamber;
 bool temperatureInsideBoundries;
 
 bool isTemperatureInsideBoundries() {

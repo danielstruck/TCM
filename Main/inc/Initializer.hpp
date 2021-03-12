@@ -2,7 +2,7 @@
 #define _INITIALIZER_HPP_
 
 
-void setUPLogger();
+void setupLogger();
 
 void setupPins();
 

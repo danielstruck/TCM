@@ -7,6 +7,7 @@
 #include "inc/Profile.hpp"
 #include "inc/TemperatureDetection.hpp"
 
+
 void setup() {
   setupPins();
   setupLogger();
@@ -14,14 +15,12 @@ void setup() {
 
 void loop() {
   // check termal range
-  temperatureCompare();
-  
   if (!isTemperatureInsideBoundries()) {
     // TODO message sender flag
   }
 
   // TODO daniel log temperature
-  logData();
+  logData(temperatureChamber);
 
   // TODO daniel handle power outage
   
@@ -31,7 +30,7 @@ void loop() {
   }
 
   if (!isPowerOK()) {
-    chooseMessage(events.badPower);
+//    chooseMessage(events.badPower);
     sendText();
   }
 }
