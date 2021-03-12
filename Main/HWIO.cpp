@@ -55,8 +55,9 @@ void turnFonaOff() {
 void turnFonaOn() {
   digitalWrite(PIN_FONA_KEY, LOW);
   while (!fona.available()) {
-    while (!Serial);
-    Serial.write("Fona unavailable \n");
+//    while (!Serial);
+//    Serial.write("Fona unavailable \n");
+    setLEDs(1, 1, 1, 1, 0);
   }
 }
 

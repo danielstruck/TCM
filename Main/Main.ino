@@ -10,9 +10,9 @@
 
 void setup() {
   setLEDs(0, 1, 1, 1, 1);
-  Serial.begin(115200);
+//  Serial.begin(115200);
   setLEDs(0, 0, 1, 1, 1);
-  delay(5000);
+//  delay(5000);
   setLEDs(0, 1, 0, 1, 1);
   setupFona();
   setLEDs(0, 0, 0, 1, 1);
@@ -27,6 +27,7 @@ void setup() {
 }
 
 void loop() {
+  /*
   // check termal range
   if (!isTemperatureInsideBoundries()) {
     // TODO message sender flag
@@ -46,4 +47,5 @@ void loop() {
 //    chooseMessage(events.badPower);
     sendText();
   }
+  */
 }
