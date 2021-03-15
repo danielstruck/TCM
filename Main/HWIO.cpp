@@ -54,9 +54,13 @@ void turnFonaOff() {
 void turnFonaOn() {
   digitalWrite(PIN_FONA_KEY, LOW);
   
-  while (!fona.available()) {
+  while (!isFonaPowered()) {
     setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
   }
+}
+
+bool isFonaPowered() {
+  return digitalRead(PIN_FONA_PS);
 }
 
 void setErrorLEDOn() {

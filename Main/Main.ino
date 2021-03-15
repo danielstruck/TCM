@@ -1,5 +1,5 @@
 #include "inc/Main.hpp"
-#include "inc/Boundry.hpp"
+#include "inc/Errors.h"
 #include "inc/HWIO.hpp"
 #include "inc/Initializer.hpp"
 #include "inc/Logger.hpp"
@@ -12,21 +12,17 @@ void setup() {
   // TODO remove delays after testing 
   setLEDs(0, 1, 0, 0, 0);
 //  Serial.begin(115200);
-  delay(100);
   setLEDs(0, 1, 1, 0, 0);
   setupFona();
-  delay(100);
   setLEDs(0, 1, 1, 1, 0);
   setupPins();
-  delay(100);
   setLEDs(0, 1, 1, 1, 1);
   setupLogger();
-  delay(100);
   setLEDs(1, 0, 0, 0, 0);
 
   setupInitialProfile();
   
-  setLEDs(0, 0, 0, 0, 0);
+  setLEDs(0, -1, -1, -1, -1);
 }
 
 bool detectRisingEdge(bool lastBtnState, bool currentBtnState) {
