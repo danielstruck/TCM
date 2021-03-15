@@ -14,3 +14,9 @@ enum events {
 	powerRestored,
 	deviceReset,
 };
+
+void blinkLED(int eventNum);
+
+void blinkShort();
+
+void blinkLong();
