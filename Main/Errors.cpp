@@ -1,20 +1,24 @@
 #include "inc/Errors.h"
 #include "inc/HWIO.hpp"
 
-int errorFlag;
+uint16_t errorFlag = 0;
 
-void setErrorFlag(){
-  for (int i = 0; i < 3; i++)
-      int bit = (errorFlag >> i) & 1;
+void setErrorFlag(int eventNum){
+  //for (int i = 0; i < 3; i++)
+     // int bit = (errorFlag >> i) & 1;
+    errorFlag |= bit(eventNum)
+     
 }
 
 void blinkLED(int eventNum) {
   // Error LED Sets
  
   for (int i = 0; i < 3; i++){
-    int bit = (eventNum >> i) & 1;
+   // int bit = (eventNum >> i) & 1;
 
-    if (bit == 0)
+  int currentBit = bit(i) & eventNum;
+
+    if (currentBit == 0)
       blinkShort();
     else 
       blinkLong();
