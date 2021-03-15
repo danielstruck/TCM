@@ -12,7 +12,6 @@ struct Boundry defineBoundry(char upper, char lower);
 
 void incrementProfile();
 
-void selectProfile();
 
 
 #endif // _PROFILE_HPP_
