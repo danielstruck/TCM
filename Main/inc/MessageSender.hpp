@@ -25,9 +25,9 @@ enum events{
 
 void sendText();
 
-void chooseMessage();
+void chooseMessage(int eventNum);
 
-void blinkLED();
+void blinkLED(int eventNum);
 
 void blinkShort();
 

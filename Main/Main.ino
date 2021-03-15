@@ -9,11 +9,52 @@
 
 
 void setup() {
-  Serial.begin(115200);
-  delay(5000);
+  // TODO remove delays after testing 
+  setLEDs(0, 1, 0, 0, 0);
+//  Serial.begin(115200);
+  delay(100);
+  setLEDs(0, 1, 1, 0, 0);
   setupFona();
+  delay(100);
+  setLEDs(0, 1, 1, 1, 0);
   setupPins();
+  delay(100);
+  setLEDs(0, 1, 1, 1, 1);
   setupLogger();
+  delay(100);
+  setLEDs(1, 0, 0, 0, 0);
+
+  setupInitialProfile();
+  
+  setLEDs(0, 0, 0, 0, 0);
+}
+
+bool detectRisingEdge(bool lastBtnState, bool currentBtnState) {
+  return lastBtnState == LOW && currentBtnState == HIGH;
+}
+
+bool isProfileBtnRising() {
+  static bool lastBtnState = false;
+
+  bool currentBtnState = profileBtnPressed();
+
+  bool risingEdgeDetected = detectRisingEdge(lastBtnState, currentBtnState);
+  
+  lastBtnState = currentBtnState;
+
+  return risingEdgeDetected;
+}
+
+bool isResetBtnRising() {
+  static bool lastBtnState = false;
+
+  bool currentBtnState = resetBtnPressed();
+
+  bool risingEdgeDetected = detectRisingEdge(lastBtnState, currentBtnState);
+  
+  lastBtnState = currentBtnState;
+
+  return risingEdgeDetected;
 }
 
 void loop() {
@@ -22,18 +63,19 @@ void loop() {
     // TODO message sender flag
   }
 
-  // TODO daniel log temperature
   logData(temperatureChamber);
-
-  // TODO daniel handle power outage
   
   // read button to change current profile
-  if (profileBtnPressed()) {
+  if (isProfileBtnRising()) {
     incrementProfile();
   }
 
   if (!isPowerOK()) {
-//    chooseMessage(events.badPower);
+    chooseMessage(badPower);
     sendText();
+  }
+
+  if (isResetBtnRising()) {
+    // TODO reset error flags
   }
 }

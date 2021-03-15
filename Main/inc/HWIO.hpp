@@ -2,13 +2,16 @@
 #define _HWIO_HPP_
 
 #include "Adafruit_FONA.h"
+#include <SoftwareSerial.h>
 
+#define FONA_TX (0)
+#define FONA_RX (1)
 #define PIN_POWER_INDICATOR (2) // used to detect power outages
 #define PIN_LED_ERROR  (3) // error LED
 #define PIN_LED4       (4) // LED for profile 4
-#define PIN_LED3       (5) //
-#define PIN_LED2       (6) 
-#define PIN_LED1       (7) 
+#define PIN_LED3       (5) // LED for profile 3
+#define PIN_LED2       (6) // LED for profile 2
+#define PIN_LED1       (7) // LED for profile 1
 #define PIN_FONA_RST   (8) // 
 #define PIN_FONA_KEY   (9) // FONA power on/off 
 #define PIN_SD_SS      (10) // slave selector for SD breakout
@@ -20,7 +23,12 @@
 #define PIN_BTN_RST    (16) // reset button input 
 #define PIN_FONA_PS    (17) // power status pin on Fona
 
+#define BUTTON_DEBOUNCE_THRESHHOLD (100)
+
+
 extern Adafruit_FONA_3G fona;
+extern SoftwareSerial fonaSS;
+extern SoftwareSerial *fonaSerial;
 
 
 // returns true if the profile button is pressed 
@@ -49,5 +57,7 @@ void setProfile3LEDOn();
 void setProfile3LEDOff();
 void setProfile4LEDOn();
 void setProfile4LEDOff();
+
+void setLEDs(int errorLED, int prof1, int prof2, int prof3, int prof4);
 
 #endif // _HWIO_HPP_
