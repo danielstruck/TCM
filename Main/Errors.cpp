@@ -1,12 +1,13 @@
 #include "inc/Errors.h"
 #include "inc/HWIO.hpp"
+#include <ctype.h>
 
-uint16_t errorFlag = 0;
+char16_t errorFlag = 0;
 
 void setErrorFlag(int eventNum){
   //for (int i = 0; i < 3; i++)
      // int bit = (errorFlag >> i) & 1;
-    errorFlag |= bit(eventNum)
+    errorFlag |= bit(eventNum);
      
 }
 
