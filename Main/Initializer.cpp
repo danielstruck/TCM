@@ -2,29 +2,24 @@
 #include "inc/HWIO.hpp"
 
 
-
-uint8_t type;
-
-
 void setupInitialProfile() {
   delay(5000);
+  // TODO implement this 
 }
 
 void setupFona() {
-  setLEDs(1, 0, 1, 1, 1);
-  turnFonaOn();
-  setLEDs(1, 1, 0, 1, 1);
-  
+  setLEDs(1, 0, 0, 0, 0);
   fonaSerial->begin(4800);
-  setLEDs(1, 0, 0, 1, 1);
-  if (!fona.begin(*fonaSerial)) {
-    setLEDs(1, 1, 1, 0, 1);
-    while (1);
-  }
-  setLEDs(1, 0, 1, 0, 1);
   
-  turnFonaOff();
-  setLEDs(1, 1, 0, 1, 1);
+  setLEDs(1, 1, 0, 0, 0);
+  if (!fona.begin(*fonaSerial)) {
+    setLEDs(1, 0, 1, 1, 1); while (1); // TODO replace w/ error LED blink code "cannot start fona"
+  }
+  
+  setLEDs(1, 1, 1, 0, 0);
+  turnFonaOn();
+
+  setLEDs(1, 1, 1, 1, 0);
 }
 
 void setupLogger(){

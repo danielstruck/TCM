@@ -7,32 +7,31 @@ SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
 SoftwareSerial *fonaSerial = &fonaSS;
 
 
+void debounceBtn(int pin, int& debounce) {
+  if (digitalRead(pin) == HIGH && debounce < BUTTON_DEBOUNCE_THRESHHOLD) {
+    ++debounce;
+  }
+  else if (digitalRead(pin) == LOW && debounce > 0) {
+    --debounce;
+  }
+}
+
 // returns true if the profile button is pressed 
 bool profileBtnPressed() {
   static int debounce = 0;
   
-  if (digitalRead(PIN_BTN_SELECT) == HIGH && debounce < 100) {
-    ++debounce;
-  }
-  else if (debounce > 0){
-    --debounce;
-  }
+  debounceBtn(PIN_BTN_SELECT, debounce);
   
-  return debounce == 100;
+  return debounce == BUTTON_DEBOUNCE_THRESHHOLD;
 }
 
 // returns true if the reset button is pressed
 bool resetBtnPressed() {
   static int debounce = 0;
   
-  if (digitalRead(PIN_BTN_RST) == HIGH && debounce < 100) {
-    ++debounce;
-  }
-  else if (debounce > 0){
-    --debounce;
-  }
+  debounceBtn(PIN_BTN_RST, debounce);
   
-  return debounce == 100;
+  return debounce == BUTTON_DEBOUNCE_THRESHHOLD;
 }
 
 // returns true if the arduino is recieving power from the Fona
@@ -54,10 +53,9 @@ void turnFonaOff() {
 }
 void turnFonaOn() {
   digitalWrite(PIN_FONA_KEY, LOW);
+  
   while (!fona.available()) {
-//    while (!Serial);
-//    Serial.write("Fona unavailable \n");
-    setLEDs(1, 1, 1, 1, 0);
+    setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
   }
 }
 
@@ -96,9 +94,10 @@ void setProfile4LEDOff() {
   digitalWrite(PIN_LED4, LOW);
 }
 
+// input 1 to turn the corresponding LED on, 0 to turn off, and -1 to continue its current state
 void setLEDs(int errorLED, int prof1, int prof2, int prof3, int prof4) {
-  if (errorLED == 1)       setErrorLEDOn();
-  else if (errorLED == 0)  setErrorLEDOff();
+  if (errorLED == 1)      setErrorLEDOn();
+  else if (errorLED == 0) setErrorLEDOff();
   
   if (prof1 == 1)      setProfile1LEDOn();
   else if (prof1 == 0) setProfile1LEDOff();
