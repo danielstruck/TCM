@@ -3,7 +3,7 @@
 
 
 void setupInitialProfile() {
-  delay(5000);
+//  delay(5000);
   // TODO implement this 
 }
 

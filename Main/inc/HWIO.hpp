@@ -46,6 +46,8 @@ uint16_t getBatteryPercentage();
 void turnFonaOff();
 void turnFonaOn();
 
+bool isFonaPowered();
+
 void setErrorLEDOn();
 void setErrorLEDOff();
 
