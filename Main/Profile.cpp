@@ -24,8 +24,3 @@ struct Boundry defineBoundry(char upper, char lower) {
 void incrementProfile() {
   currentProfile = (++currentProfile) % (sizeof(profile) / sizeof(Boundry));
 }
-
-void selectProfile() {
-	// TODO
- 
-}
