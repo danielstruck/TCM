@@ -1,6 +1,6 @@
 #pragma once
 
-extern uint16_t errorFlag;
+extern char16_t errorFlag;
 
 enum events {
 	badTemp = 0, //will need return of temperature compare function to activate
