@@ -1,7 +1,7 @@
-
- #include "Adafruit_FONA.h"
+#include "Adafruit_FONA.h"
 #include "inc/MessageSender.hpp"
 #include "inc/HWIO.hpp"
+#include "inc/Errors.h"
 
 char *messageText;
 unsigned long timestamp;
@@ -37,13 +37,13 @@ void sendText() {
 
 void chooseMessage(int eventNum) {
   switch(eventNum){
-    case 0:
+    case badTemp:
       sprintf(messageText, messages[0]);
       break;
-    case 1:
+    case badPower:
       sprintf(messageText, messages[1], getBatteryPercentage());
       break;
-    case 3:
+    case lowBattery:
       sprintf(messageText, messages[3], getBatteryPercentage());
       break;
    /* case 4:
@@ -52,16 +52,16 @@ void chooseMessage(int eventNum) {
     case 5:
       sprintf(messageText, messages[0]);
       break;*/
-    case 6:
+    case noThermister:
       sprintf(messageText, messages[6]);
       break;
-    case 7:
+    case periodicReport:
       sprintf(messageText, messages[7]);
       break;
-    case 8:
+    case powerRestored:
       sprintf(messageText, messages[8], getBatteryPercentage());
       break;
-    case 9:
+    case deviceReset:
       sprintf(messageText, messages[9]);
       break;
   }
