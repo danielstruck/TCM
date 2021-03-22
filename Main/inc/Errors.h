@@ -15,6 +15,8 @@ enum events {
 	deviceReset,
 };
 
+void setErrorFlag(int eventNum);
+
 void blinkLED(int eventNum);
 
 void blinkShort();

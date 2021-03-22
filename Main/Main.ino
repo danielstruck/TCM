@@ -8,70 +8,76 @@
 #include "inc/TemperatureDetection.hpp"
 
 
+void sendSMSWithError(int errorCode); // TODO move this to file MessageSender?
+void sendSMS(int errorCode); // TODO move this to file MessageSender?
+
+
 void setup() {
-  // TODO remove delays after testing 
-  setLEDs(0, 1, 0, 0, 0);
-//  Serial.begin(115200);
-  setLEDs(0, 1, 1, 0, 0);
-  setupFona();
-  setLEDs(0, 1, 1, 1, 0);
+  // initialize pins
   setupPins();
-  setLEDs(0, 1, 1, 1, 1);
+
+  // initialize serial stream
+  setLEDs(1, 1, 1, 1, 1);
+  while(!Serial);
+  Serial.begin(115200);
+  delay(5000);
+
+  // enable and start up Fona 3G
+  setLEDs(0, 1, 0, 0, 0);
+  setupFona();
+
+  // setup logger and SD card bus
+  setLEDs(0, 1, 1, 0, 0);
   setupLogger();
-  setLEDs(1, 0, 0, 0, 0);
 
+  // ask user to input initial profile parameters
   setupInitialProfile();
-  
+
+  // turn off error LED
   setLEDs(0, -1, -1, -1, -1);
-}
-
-bool detectRisingEdge(bool lastBtnState, bool currentBtnState) {
-  return lastBtnState == LOW && currentBtnState == HIGH;
-}
-
-bool isProfileBtnRising() {
-  static bool lastBtnState = false;
-
-  bool currentBtnState = profileBtnPressed();
-
-  bool risingEdgeDetected = detectRisingEdge(lastBtnState, currentBtnState);
   
-  lastBtnState = currentBtnState;
-
-  return risingEdgeDetected;
-}
-
-bool isResetBtnRising() {
-  static bool lastBtnState = false;
-
-  bool currentBtnState = resetBtnPressed();
-
-  bool risingEdgeDetected = detectRisingEdge(lastBtnState, currentBtnState);
   
-  lastBtnState = currentBtnState;
-
-  return risingEdgeDetected;
+  Serial.println("Setup complete");
 }
 
 void loop() {
+  logData(temperatureChamber);
+  
   // check termal range
-  if (!isTemperatureInsideBoundries()) {
-    // TODO message sender flag
+  if (!isTemperatureInsideBoundries() || (errorFlag & badTemp)) {
+    sendSMSWithError(badTemp);
   }
 
-  logData(temperatureChamber);
+  if (!isPowerOK() || (errorFlag & badPower)) {
+    Serial.println("Power outage detected");
+    sendSMSWithError(badPower);
+  }
+  else if (isPowerOK() && (errorFlag & badPower)) {
+    sendSMS(powerRestored);
+  }
+
+  if (resetBtnPressed()) {
+    errorFlag = 0; // TODO reset error flags
+  }
+
+  // TODO periodic report
   
   // read button to change current profile
   if (isProfileBtnRising()) {
     incrementProfile();
   }
 
-  if (!isPowerOK()) {
-    chooseMessage(badPower);
-    sendText();
-  }
+  // TODO (stretch goal) receive SMS
+}
 
-  if (isResetBtnRising()) {
-    // TODO reset error flags
-  }
+
+void sendSMSWithError(int eventCode) {
+    setErrorFlag(eventCode);
+    sendSMS(eventCode);
+    blinkLED(eventCode);
+}
+
+void sendSMS(int eventCode) {
+    chooseMessage(eventCode);
+    sendText();
 }

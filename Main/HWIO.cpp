@@ -3,15 +3,15 @@
 #include <SoftwareSerial.h>
 
 Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
-SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
+SoftwareSerial fonaSS = SoftwareSerial(FONA_RX, FONA_TX);
 SoftwareSerial *fonaSerial = &fonaSS;
-
+bool fonaOn = false;
 
 void debounceBtn(int pin, int& debounce) {
-  if (digitalRead(pin) == HIGH && debounce < BUTTON_DEBOUNCE_THRESHHOLD) {
+  if (digitalRead(pin) == LOW && debounce < BUTTON_DEBOUNCE_THRESHHOLD) {
     ++debounce;
   }
-  else if (digitalRead(pin) == LOW && debounce > 0) {
+  else if (digitalRead(pin) == HIGH && debounce > 0) {
     --debounce;
   }
 }
@@ -42,21 +42,36 @@ bool isPowerOK() {
 // returns -1 on failure, current battery percentage otherwise
 uint16_t getBatteryPercentage() {
   uint16_t vPer;
-  if (fona.getBattPercent(&vPer)) {
+  if (!fona.getBattPercent(&vPer)) {
     vPer = -1;
   }
+  char str[32]; sprintf(str, "battery = %d", vPer);
+  Serial.println(str);
   return vPer;
 }
 
-void turnFonaOff() {
-  digitalWrite(PIN_FONA_KEY, HIGH);
-}
-void turnFonaOn() {
+void toggleFona() {
   digitalWrite(PIN_FONA_KEY, LOW);
+  Serial.println("key -> low");
+  int previousPowerStatus = digitalRead(PIN_FONA_PS);
+  delay(4000);
   
   while (!isFonaPowered()) {
+    Serial.println("Fona not powered");
     setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
   }
+  Serial.println("Fona powered");
+  fonaOn = !fonaOn;
+  
+  digitalWrite(PIN_FONA_KEY, HIGH);
+
+  char err[32];
+  sprintf(err, "ps:%d>%d,on:%d", previousPowerStatus, isFonaOn(), fonaOn);
+  Serial.println(err);
+}
+
+bool isFonaOn() {
+  return fonaOn;
 }
 
 bool isFonaPowered() {
@@ -114,4 +129,32 @@ void setLEDs(int errorLED, int prof1, int prof2, int prof3, int prof4) {
   
   if (prof4 == 1)      setProfile4LEDOn();
   else if (prof4 == 0) setProfile4LEDOff();
+}
+
+bool detectRisingEdge(bool lastBtnState, bool currentBtnState) {
+  return lastBtnState == LOW && currentBtnState == HIGH;
+}
+
+bool isProfileBtnRising() {
+  static bool lastBtnState = false;
+
+  bool currentBtnState = profileBtnPressed();
+
+  bool risingEdgeDetected = detectRisingEdge(lastBtnState, currentBtnState);
+  
+  lastBtnState = currentBtnState;
+
+  return risingEdgeDetected;
+}
+
+bool isResetBtnRising() {
+  static bool lastBtnState = false;
+
+  bool currentBtnState = resetBtnPressed();
+
+  bool risingEdgeDetected = detectRisingEdge(lastBtnState, currentBtnState);
+  
+  lastBtnState = currentBtnState;
+
+  return risingEdgeDetected;
 }

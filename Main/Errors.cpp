@@ -31,6 +31,7 @@ void blinkLED(int eventNum) {
 }
 
 void blinkShort(){
+  Serial.println("blink short");
   setErrorLEDOn();
   delay(500);
   setErrorLEDOff();
@@ -38,6 +39,7 @@ void blinkShort(){
 }
 
 void blinkLong() {
+  Serial.println("blink long");
   setErrorLEDOn();
   delay(1000);
   setErrorLEDOff();
