@@ -13,20 +13,39 @@ void setErrorFlag(int eventNum){
 
 void blinkLED(int eventNum) {
   // Error LED Sets
- 
-  for (int i = 0; i < 3; i++){
-   // int bit = (eventNum >> i) & 1;
+  static long nextCommandMillis = 0;
+//  static const long shortBlinkDelay = 500;
+//  static const long longBlinkDelay = 1000;
+  static const int blinkDelay = 500;
+  static bool currentState = false;
+  
+  if (badSMS && (millis() >= nextCommandMillis)) {
+    currentState = !currentState;
+    if (currentState == false) setErrorLEDOff();
+    else                       setErrorLEDOn();
+    nextCommandMillis = millis() + blinkDelay;
+  }
+  else if (errorFlag != 0) {
+    setErrorLEDOn();
+  }
+  else {
+    setErrorLEDOff();
+  }
 
-  int currentBit = bit(i) & eventNum;
+  // OLD
+//  for (int i = 0; i < 3; i++){
+//    // int bit = (eventNum >> i) & 1;
+//
+//    int currentBit = bit(i) & eventNum;
+//
+//    if (currentBit == 0)
+//      blinkShort();
+//    else 
+//      blinkLong();
+// 
+//  }
 
-    if (currentBit == 0)
-      blinkShort();
-    else 
-      blinkLong();
- 
- }
-
- delay(5000);
+// delay(5000);
  
 }
 

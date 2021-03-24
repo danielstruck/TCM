@@ -57,7 +57,7 @@ void loop() {
   }
 
   if (resetBtnPressed()) {
-    errorFlag = 0; // TODO reset error flags
+    errorFlag = 0;
   }
 
   // TODO periodic report
