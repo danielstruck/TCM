@@ -9,8 +9,10 @@ extern unsigned long timestamp;
 extern unsigned long errorDelay;
 extern const char *messages[];
 
-void sendText();
+void sendText(int eventNum);
 
 void chooseMessage(int eventNum);
+
+void millisOverflow(int eventNum);
 
 #endif // _MESSAGE_SENDER_HPP_
