@@ -32,8 +32,8 @@ void sendText() {
    static int counter = 0;
    counter++;
    if (counter ==  1) {
-//    fona.sendSMS("7202449051", messageText); //send to => phone numbers
-      fona.sendSMS("2246160041", messageText); //send to => phone numbers
+      fona.sendSMS("7202449051", messageText); //send to => phone numbers
+     // fona.sendSMS("2246160041", messageText); //send to => phone numbers
       Serial.println("Send Message");
    }
    else if (counter == 5)
@@ -45,16 +45,19 @@ void sendText() {
 
 void chooseMessage(int eventNum) {
   Serial.println("choose message function");
+  if (eventNum <= 6)
+    sprintf(messageText, "WARNING: ");
   switch(eventNum){
-    case eventNum <= 6:
-      sprintf(messageText, "WARNING: ");
     case badTemp:
       sprintf(messageText, messages[0]);
+      break;
     case badPower:
       sprintf(messageText, messages[1], getBatteryPercentage());
       Serial.println("Bad power set");
+      break;
     case lowBattery:
       sprintf(messageText, messages[3], getBatteryPercentage());
+      break;
    /* case 4:
       sprintf(messageText, messages[0]);
       break;
@@ -63,6 +66,7 @@ void chooseMessage(int eventNum) {
       break;*/
     case noThermister:
       sprintf(messageText, messages[6]);
+      break;
     case periodicReport:
       sprintf(messageText, messages[7]);
       break;
