@@ -12,13 +12,13 @@ unsigned long errorDelay;
 
 // make message for when profile is changed
 const char *messages[] = {
-  "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d",
-  "WARNING: Power outage. Current Battery %%: %d",
+  "Temperature out of range: (rangeMin - rangeMax) Current Temp: %d",
+  "Power outage. Current Battery %%: %d",
   "",
-  "WARNING: Battery Low. Current Battery %%: %d",
+  "Battery Low. Current Battery %%: %d",
   "",
   "", 
-  "WARNING: Thermister not detected.",
+  "Thermister not detected.",
   "Periodic Report: Range is %d to %d. Current Temperature is %d",
   "POWER RESTORED: Current Battery %% is %d", 
   "Device reset button pressed. Restarting operations",
@@ -46,16 +46,15 @@ void sendText() {
 void chooseMessage(int eventNum) {
   Serial.println("choose message function");
   switch(eventNum){
+    case eventNum <= 6:
+      sprintf(messageText, "WARNING: ");
     case badTemp:
       sprintf(messageText, messages[0]);
-      break;
     case badPower:
       sprintf(messageText, messages[1], getBatteryPercentage());
       Serial.println("Bad power set");
-      break;
     case lowBattery:
       sprintf(messageText, messages[3], getBatteryPercentage());
-      break;
    /* case 4:
       sprintf(messageText, messages[0]);
       break;
@@ -64,7 +63,6 @@ void chooseMessage(int eventNum) {
       break;*/
     case noThermister:
       sprintf(messageText, messages[6]);
-      break;
     case periodicReport:
       sprintf(messageText, messages[7]);
       break;
