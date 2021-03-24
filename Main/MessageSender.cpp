@@ -20,7 +20,8 @@ const char *messages[] = {
   "", 
   "WARNING: Thermister not detected.",
   "Periodic Report: Range is %d to %d. Current Temperature is %d",
-  "POWER RESTORED: Current Battery %% is %d", "Device reset button pressed. Restarting operations",
+  "POWER RESTORED: Current Battery %% is %d", 
+  "Device reset button pressed. Restarting operations",
   ""
 };
 
