@@ -31,7 +31,7 @@ void setup() {
   setupLogger();
 
   // ask user to input initial profile parameters
-  setupInitialProfile();
+//  setupInitialProfile();
 
   // turn off error LED
   setLEDs(0, -1, -1, -1, -1);
@@ -41,21 +41,24 @@ void setup() {
 }
 
 void loop() {
+  char stateStr[128];
+  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d  rtc=%",
+          errorFlag, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed());
+  Serial.println(stateStr);
+  
   logData(temperatureChamber);
   
   // check termal range
-  if (!isTemperatureInsideBoundries() || (errorFlag & badTemp)) {
-    sendSMSWithError(badTemp);
-  }
+//  if (!isTemperatureInsideBoundries() || (errorFlag & bit(badTemp))) {
+//    sendSMSWithError(badTemp);
+//  }
 
-  if (!isPowerOK() || (errorFlag & badPower)) {
+  if (!isPowerOK() || (errorFlag & bit(badPower))) {
     Serial.println("Power outage detected");
     sendSMSWithError(badPower);
   }
-  else if (isPowerOK() && (errorFlag & badPower)) {
-    sendSMS(powerRestored);
-  }
 
+  
   if (resetBtnPressed()) {
     errorFlag = 0;
   }

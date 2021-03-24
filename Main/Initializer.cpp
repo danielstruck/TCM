@@ -26,6 +26,7 @@ void setupInitialProfile() {
       incrementProfile();
       turnProfileLEDOn();
     }
+    // TODO blink profile LEDs to signify that rst/start btn must be pressed
   }
 }
 
@@ -44,6 +45,10 @@ void setupFona() {
     /*setLEDs(1, 0, 1, 1, 1); */ // TODO replace w/ error LED blink code "cannot start fona"
     while (1);
   }
+
+  Serial.println("Enable time sync");
+  if (!fona.enableNetworkTimeSync(true))
+    Serial.println("Failed to enable time sync");
 
   Serial.println("fona setup complete");
 }
@@ -66,8 +71,8 @@ void setupPins() {
 //  pinMode(PIN_SD_MISO, INPUT);
 //  pinMode(PIN_SD_CLK, OUTPUT);
 //  pinMode(PIN_THERM_IN, INPUT);
-//  pinMode(PIN_BTN_SELECT, INPUT_PULLUP); // internal pullup - https://www.arduino.cc/en/Tutorial/Foundations/DigitalPins
-//  pinMode(PIN_BTN_RST, INPUT_PULLUP);
+  pinMode(PIN_BTN_SELECT, INPUT_PULLUP); // internal pullup - https://www.arduino.cc/en/Tutorial/Foundations/DigitalPins
+  pinMode(PIN_BTN_RST, INPUT_PULLUP);
   pinMode(PIN_FONA_PS, INPUT);
 
 //  digitalWrite(PIN_FONA_KEY, LOW);
