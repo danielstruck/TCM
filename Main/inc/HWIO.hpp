@@ -6,7 +6,7 @@
 
 #define FONA_TX (2)
 #define FONA_RX (3)
-#define PIN_POWER_INDICATOR (5) // used to detect power outages
+#define PIN_POWER_INDICATOR (14) // used to detect power outages
 #define PIN_LED_ERROR  (6) // error LED
 #define PIN_LED4       (16) // LED for profile 4
 #define PIN_LED3       (16) // LED for profile 3
