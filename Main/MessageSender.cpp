@@ -22,7 +22,7 @@ const char *messages[] = {
   "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d",
   "WARNING: Power outage. Current Battery %%: %d",
   "",
-  "",//"WARNING: Battery Low. Current Battery %%: %d",
+  "",
   "",
   "", 
   "WARNING: Thermister not detected.",
