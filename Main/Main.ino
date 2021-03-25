@@ -9,7 +9,6 @@
 
 
 void sendSMSWithError(int errorCode); // TODO move this to file MessageSender?
-void sendSMS(int errorCode); // TODO move this to file MessageSender?
 
 
 void setup() {
@@ -42,7 +41,18 @@ void setup() {
 
 void loop() {
   char stateStr[128];
-  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d  rtc=%",
+//  uint8_t *rtc_year;
+//  uint8_t *rtc_month;
+//  uint8_t *rtc_day;
+//  uint8_t *rtc_hour;
+//  uint8_t *rtc_minute;
+//  uint8_t *rtc_second; 
+//  uint8_t *rtc_tz;
+//  fona.readRTC(rtc_year, rtc_month, rtc_day, rtc_hour, rtc_minute, rtc_second, rtc_tz);
+//  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d  rtc=%4d/%2d/%2d_%2d:%2d:%2d_%d",
+//          errorFlag, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed(),
+//          *rtc_month, *rtc_day, *rtc_year, *rtc_hour, *rtc_minute, *rtc_second, *rtc_tz);
+  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d",
           errorFlag, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed());
   Serial.println(stateStr);
   
@@ -76,11 +86,6 @@ void loop() {
 
 void sendSMSWithError(int eventCode) {
     setErrorFlag(eventCode);
-    sendSMS(eventCode);
-    blinkLED(eventCode);
-}
-
-void sendSMS(int eventCode) {
-    chooseMessage(eventCode);
-    sendText();
+    sendText(eventCode);
+    blinkLED();
 }

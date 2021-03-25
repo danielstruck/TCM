@@ -47,7 +47,7 @@ void setupFona() {
   }
 
   Serial.println("Enable time sync");
-  if (!fona.enableNetworkTimeSync(true))
+  if (!fona.enableRTC(1))
     Serial.println("Failed to enable time sync");
 
   Serial.println("fona setup complete");

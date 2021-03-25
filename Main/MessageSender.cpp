@@ -3,14 +3,16 @@
 #include "inc/HWIO.hpp"
 #include "inc/Errors.h"
 
-#define time_Max (4,294,967,295); //Max value of millis()
-#define fifteenMinutes (900,000); //Fifteen minutes worth of milliseconds
+// (4,294,967,295); //Max value of millis()
+#define time_Max (4294967295)
+// (900,000); //Fifteen minutes worth of milliseconds
+#define fifteenMinutes (900000)
 
 char messageText[128];
 unsigned long timestamp;
 unsigned long errorDelay;
-int lastSentArray[10];
-int nextSentArray[10];
+unsigned long lastSentArray[10];
+unsigned long nextSentArray[10];
 
 
 //char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?

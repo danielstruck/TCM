@@ -17,7 +17,7 @@ enum events {
 
 void setErrorFlag(int eventNum);
 
-void blinkLED(int eventNum);
+void blinkLED();
 
 void blinkShort();
 

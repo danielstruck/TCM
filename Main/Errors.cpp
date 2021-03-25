@@ -11,15 +11,15 @@ void setErrorFlag(int eventNum){
      
 }
 
-void blinkLED(int eventNum) {
+void blinkLED() {
   // Error LED Sets
-  static long nextCommandMillis = 0;
+  static unsigned long nextCommandMillis = 0;
 //  static const long shortBlinkDelay = 500;
 //  static const long longBlinkDelay = 1000;
   static const int blinkDelay = 500;
   static bool currentState = false;
   
-  if (badSMS && (millis() >= nextCommandMillis)) {
+  if ((errorFlag | badSMS) && (millis() >= nextCommandMillis)) {
     currentState = !currentState;
     if (currentState == false) setErrorLEDOff();
     else                       setErrorLEDOn();
