@@ -40,21 +40,26 @@ void setup() {
 }
 
 void loop() {
-  char stateStr[128];
-//  uint8_t *rtc_year;
-//  uint8_t *rtc_month;
-//  uint8_t *rtc_day;
-//  uint8_t *rtc_hour;
-//  uint8_t *rtc_minute;
-//  uint8_t *rtc_second; 
-//  uint8_t *rtc_tz;
-//  fona.readRTC(rtc_year, rtc_month, rtc_day, rtc_hour, rtc_minute, rtc_second, rtc_tz);
-//  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d  rtc=%4d/%2d/%2d_%2d:%2d:%2d_%d",
+//  char stateStr[128];
+  
+//  uint8_t rtc_year;
+//  uint8_t rtc_month;
+//  uint8_t rtc_day;
+//  uint8_t rtc_hour;
+//  uint8_t rtc_minute;
+//  uint8_t rtc_second; 
+//  uint8_t rtc_tz;
+//  fona.readRTC(&rtc_year, &rtc_month, &rtc_day, &rtc_hour, &rtc_minute, &rtc_second, &rtc_tz);
+//  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d  rtc=%02d/%02d/%04d %02d:%02d:%02d+%d",
 //          errorFlag, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed(),
-//          *rtc_month, *rtc_day, *rtc_year, *rtc_hour, *rtc_minute, *rtc_second, *rtc_tz);
-  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d",
-          errorFlag, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed());
-  Serial.println(stateStr);
+//          rtc_month, rtc_day, rtc_year, rtc_hour, rtc_minute, rtc_second, rtc_tz);
+
+//  char timeStr[64];
+//  getTime(timeStr, 64);
+
+//  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d  tim=%s",
+//          errorFlag, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed(), timeStr);
+//  Serial.println(stateStr);
   
   logData(temperatureChamber);
   
@@ -64,12 +69,13 @@ void loop() {
 //  }
 
   if (!isPowerOK() || (errorFlag & bit(badPower))) {
-    Serial.println("Power outage detected");
+    Serial.println("> Power outage detected");
     sendSMSWithError(badPower);
   }
 
   
   if (resetBtnPressed()) {
+    Serial.println("> Reset ON");
     errorFlag = 0;
   }
 
@@ -77,15 +83,19 @@ void loop() {
   
   // read button to change current profile
   if (isProfileBtnRising()) {
+    Serial.println("> Profile increment");
     incrementProfile();
   }
 
   // TODO (stretch goal) receive SMS
+
+
+  // display any error codes on the error LED
+  blinkLED();
 }
 
 
 void sendSMSWithError(int eventCode) {
     setErrorFlag(eventCode);
     sendText(eventCode);
-    blinkLED();
 }
