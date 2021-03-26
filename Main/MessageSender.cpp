@@ -11,8 +11,8 @@
 char messageText[128];
 unsigned long timestamp1;
 unsigned long errorDelay;
-unsigned long lastSentArray[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-unsigned long nextSentArray[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+unsigned long lastSentArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+unsigned long nextSentArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 
 //char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?
