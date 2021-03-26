@@ -9,7 +9,7 @@
 #define fifteenMinutes (900000)
 
 char messageText[128];
-unsigned long timestamp;
+unsigned long timestamp1;
 unsigned long errorDelay;
 unsigned long lastSentArray[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 unsigned long nextSentArray[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
