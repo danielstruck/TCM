@@ -70,24 +70,24 @@ uint32_t nextLog = 0;
 //}
 
 void logData(int temp) {
-  uint32_t currentTime = millis();
-  char str[32];
-  File myFile;
-  sprintf(str, "%d &d", currentTime, temp); 
-
-  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
-
-  else if (currentTime >= nextLog)
-  {
-    myFile = SD.open("log1.txt", FILE_WRITE);
-    myFile.println(str);
-    myFile.close();
-
-    myFile = SD.open("log2.txt", FILE_WRITE);
-    myFile.println(str);
-    myFile.close();
-
-    lastLog = currentTime;
-    nextLog = lastLog + fifteenSec;
-  }
+//  uint32_t currentTime = millis();
+//  char str[32];
+//  File myFile;
+//  sprintf(str, "%d &d", currentTime, temp); 
+//
+//  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
+//
+//  else if (currentTime >= nextLog)
+//  {
+//    myFile = SD.open("log1.txt", FILE_WRITE);
+//    myFile.println(str);
+//    myFile.close();
+//
+//    myFile = SD.open("log2.txt", FILE_WRITE);
+//    myFile.println(str);
+//    myFile.close();
+//
+//    lastLog = currentTime;
+//    nextLog = lastLog + fifteenSec;
+//  }
 }
