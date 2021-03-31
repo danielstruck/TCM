@@ -7,9 +7,8 @@ int temperatureChamber;
 
 
 bool isTemperatureInsideBoundries() {
-//  return profile[currentProfile].lower >= temperatureChamber &&
-//         profile[currentProfile].upper <= temperatureChamber;
-  return temperatureChamber;
+  return profile[currentProfile].lower >= temperatureChamber &&
+         profile[currentProfile].upper <= temperatureChamber;
 }
 
 void temp_sense()
@@ -23,8 +22,17 @@ void temp_sense()
   
   Vo = analogRead(PIN_THERM_IN);
   R2 = R1 * (1024.0 / Vo - 1.0);
-  temperatureChamber = 1.0/T0 + (1.0/beta)*log(R2/R0);
-  temperatureChamber = 1.0/temperatureChamber - 273.0;
+  double denominator = 1.0/T0 + (1.0/beta)*log(R2/R0);
+  temperatureChamber = 1.0/denominator - 273.0;
 //  T = (T*9/5)+32; // convert to F
-  Serial.print("Temp: "); Serial.print(temperatureChamber); Serial.print("C  from  Vo="); Serial.println(Vo);
+
+//  Serial.print(" R2: "); Serial.print(R2); 
+//  Serial.print(" | "); Serial.print(R2/R0);
+//  Serial.print(" | "); Serial.print(log(R2/R0));
+//  Serial.print(" | "); Serial.print(1.0/beta);
+//  Serial.print(" | "); Serial.print(1.0/T0);
+//  
+//  Serial.print(" denom: "); Serial.print(denominator);
+//  Serial.print(" Temp: "); Serial.print(temperatureChamber); 
+//  Serial.print("C  from  Vo="); Serial.println(Vo);
 }

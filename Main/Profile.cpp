@@ -1,9 +1,5 @@
 #include "inc/Profile.hpp"
 
-typedef struct boundry {
-  int upper, lower;
-};
-
 
 Boundry profile[] = {
   defineBoundry(-54,72),
