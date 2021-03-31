@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include "inc/Logger.hpp"
 #include "inc/MessageSender.hpp"
-#include <SD.h>
-#include <SPI.h>
+//#include <SD.h>
 
 uint32_t lastLog = 0;
 uint32_t nextLog = 0;
 
-//SD.begin(sspin);
+//SD.begin(PIN_SD_SS);
 //
 
 //void getTime(){
