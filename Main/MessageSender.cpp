@@ -2,11 +2,7 @@
 #include "inc/MessageSender.hpp"
 #include "inc/HWIO.hpp"
 #include "inc/Errors.h"
-
-// (4,294,967,295); //Max value of millis()
-#define time_Max (4294967295)
-// (900,000); //Fifteen minutes worth of milliseconds
-#define fifteenMinutes (900000)
+#include "inc/TemperatureDetection.hpp"
 
 char messageText[128];
 unsigned long timestamp1;
@@ -33,14 +29,16 @@ const char *messages[] = {
 };
 
 void sendText(int eventNum) {
+  unsigned long ms = millis();
+  
   Serial.println("Send text function");
    //char *sendTo = "";
 	 // send an SMS!   
    
    chooseMessage(eventNum);
-   millisOverflow(eventNum);
-
-   unsigned long ms = millis();
+//   millisOverflow(eventNum);
+   if (ms < lastSentArray[eventNum])
+     nextSentArray[eventNum] -= time_Max;
    
    if (ms >= nextSentArray[eventNum]) {
       fona.sendSMS("7202449051", messageText); //send to => phone numbers
@@ -48,6 +46,7 @@ void sendText(int eventNum) {
       Serial.println("Send Message");
       lastSentArray[eventNum] = ms;
       nextSentArray[eventNum] = ms + fifteenMinutes;
+//      delay(5000); // delay serial print so we know the message has been sent 
    }
 }
 
@@ -55,7 +54,7 @@ void chooseMessage(int eventNum) {
   Serial.println("choose message function");
   switch(eventNum){
     case badTemp:
-      sprintf(messageText, messages[0]);
+      sprintf(messageText, messages[0], temperatureChamber);
       break;
     case badPower:
       sprintf(messageText, messages[1], getBatteryPercentage());
@@ -87,9 +86,9 @@ void chooseMessage(int eventNum) {
   Serial.print("Message: "); Serial.println(messageText);
 }
 
- void millisOverflow(int eventNum){
-   unsigned long ms = millis();
-
-   if (ms < lastSentArray[eventNum])
-     nextSentArray[eventNum] -= time_Max;
-  }
+// void millisOverflow(int eventNum){
+//   unsigned long ms = millis();
+//
+//   if (ms < lastSentArray[eventNum])
+//     nextSentArray[eventNum] -= time_Max;
+//  }

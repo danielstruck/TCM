@@ -1,33 +1,30 @@
 #include "inc/TemperatureDetection.hpp"
+#include "inc/Profile.hpp"
+#include "inc/HWIO.hpp"
 
-struct constants
-{
-  int ThermistorPin = 0;
-  int Vo;
-  int R0 = 10000;
-  int T0 = 25 + 273;
-  float R1 = 10000;
-  float z, R2, T;
-  float beta = 3950;
-  char UNITS = 'C';
-};
 
 int temperatureChamber;
-bool temperatureInsideBoundries;
+
 
 bool isTemperatureInsideBoundries() {
-  return temperatureInsideBoundries;
+//  return profile[currentProfile].lower >= temperatureChamber &&
+//         profile[currentProfile].upper <= temperatureChamber;
+  return temperatureChamber;
 }
 
-void temp_sense(struct constants)
+void temp_sense()
 {
-  struct constants constants;
-  constants.Vo = analogRead(constants.ThermistorPin);
-  constants.R2 = constants.R1 * (1024 / (float)constants.Vo - 1.0);
-  constants.T = (float)1/constants.T0 + (1/constants.beta)*log((float)constants.R2/constants.R0);
-  constants.T = 1/constants.T - 273;
-  constants.T = (constants.T*9/5)+32;
-  Serial.print("Temperature: "); 
-  Serial.print(constants.T);
-  Serial.println("F"); 
+  double Vo;
+  double R0 = 10000;
+  double T0 = 25 + 273;
+  double R1 = 10000;
+  double R2, T;
+  double beta = 3950;
+  
+  Vo = analogRead(PIN_THERM_IN);
+  R2 = R1 * (1024.0 / Vo - 1.0);
+  temperatureChamber = 1.0/T0 + (1.0/beta)*log(R2/R0);
+  temperatureChamber = 1.0/temperatureChamber - 273.0;
+//  T = (T*9/5)+32; // convert to F
+  Serial.print("Temp: "); Serial.print(temperatureChamber); Serial.print("C  from  Vo="); Serial.println(Vo);
 }

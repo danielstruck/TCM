@@ -1,17 +1,16 @@
 #ifndef _PROFILE_HPP_
 #define _PROFILE_HPP_
 
-struct Boundry;
+typedef struct boundry Boundry;
 
 extern Boundry profile[];
 
-extern char currentProfile;
+extern int currentProfile;
 
 
-struct Boundry defineBoundry(char upper, char lower);
+Boundry defineBoundry(int upper, int lower);
 
 void incrementProfile();
-
 
 
 #endif // _PROFILE_HPP_

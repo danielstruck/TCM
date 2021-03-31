@@ -1,7 +1,7 @@
 #include "inc/Profile.hpp"
 
-struct Boundry{
-  char upper, lower;
+typedef struct boundry {
+  int upper, lower;
 };
 
 
@@ -12,9 +12,9 @@ Boundry profile[] = {
   defineBoundry(10, 32)
 };
 
-char currentProfile = 0;
+int currentProfile = 0;
 
-struct Boundry defineBoundry(char upper, char lower) {
+Boundry defineBoundry(int upper, int lower) {
   Boundry b;
   b.upper = upper;
   b.lower = lower;

@@ -2,32 +2,71 @@
 #include "inc/HWIO.hpp"
 #include "inc/Profile.hpp"
 #include "inc/Errors.h"
+#include "inc/MessageSender.hpp"
 
-void turnProfileLEDOn() {
-  switch (currentProfile) {
-    case 0: 
-      setProfile1LEDOn();
+
+void blinkCurrentProfile() {
+  static unsigned long nextBlink = 0;
+  static int state = 0;
+
+  unsigned long ms = millis();
+
+  if (ms >= nextBlink) {
+    state = !state;
+    nextBlink += 500;
+    if (nextBlink > time_Max) {
+      nextBlink -= time_Max;
+    }
+  }
+
+//  Serial.print("init profile state: "); Serial.println(state);
+//  Serial.print("init profile blink: "); Serial.print(ms); Serial.print("/"); Serial.println(nextBlink);
+  if (state == 0) {
+    setLEDs(0, 0, 0, 0, 0);
+  }
+  else {
+    switch (currentProfile) {
+      case 0: 
+        setLEDs(0, 1, 0, 0, 0);
       break;
-    case 1: 
-      setProfile2LEDOn();
+      case 1: 
+        setLEDs(0, 0, 1, 0, 0);
       break;
-    case 2: 
-      setProfile3LEDOn();
+      case 2: 
+        setLEDs(0, 0, 0, 1, 0);
       break;
-    case 3: 
-      setProfile4LEDOn();
+      case 3: 
+        setLEDs(0, 0, 0, 0, 1);
       break;
+      default:
+        setLEDs(0, 1, 1, 1, 1);
+    }
   }
 }
 void setupInitialProfile() {
-  setLEDs(1, 0, 0, 0, 0);
-  turnProfileLEDOn();
   while (!resetBtnPressed()) {
+    Serial.println("> init profile");
     if (isProfileBtnRising()) {
       incrementProfile();
-      turnProfileLEDOn();
     }
-    // TODO blink profile LEDs to signify that rst/start btn must be pressed
+    blinkCurrentProfile();
+  }
+  
+  switch (currentProfile) {
+    case 0: 
+      setLEDs(0, 1, 0, 0, 0);
+    break;
+    case 1: 
+      setLEDs(0, 0, 1, 0, 0);
+    break;
+    case 2: 
+      setLEDs(0, 0, 0, 1, 0);
+    break;
+    case 3: 
+      setLEDs(0, 0, 0, 0, 1);
+    break;
+    default:
+      setLEDs(0, 1, 1, 1, 1);
   }
 }
 

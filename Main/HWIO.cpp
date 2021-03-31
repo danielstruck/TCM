@@ -54,7 +54,7 @@ void toggleFona() {
   digitalWrite(PIN_FONA_KEY, LOW);
   Serial.println("key -> low");
   int previousPowerStatus = digitalRead(PIN_FONA_PS);
-  delay(4000);
+  delay(6000);
   
   while (!isFonaPowered()) {
     Serial.println("Fona not powered");
@@ -75,7 +75,8 @@ bool isFonaOn() {
 }
 
 bool isFonaPowered() {
-  return digitalRead(PIN_FONA_PS);
+  Serial.print("PS: "); Serial.print(digitalRead(PIN_FONA_PS)); Serial.print(" == ");Serial.println(HIGH);
+  return digitalRead(PIN_FONA_PS) == HIGH;
 }
 
 void setErrorLEDOn() {

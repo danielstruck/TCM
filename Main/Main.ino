@@ -30,7 +30,7 @@ void setup() {
   setupLogger();
 
   // ask user to input initial profile parameters
-//  setupInitialProfile();
+  setupInitialProfile();
 
   // turn off error LED
   setLEDs(0, -1, -1, -1, -1);
@@ -40,7 +40,7 @@ void setup() {
 }
 
 void loop() {
-//  char stateStr[128];
+  char stateStr[128];
   
 //  uint8_t rtc_year;
 //  uint8_t rtc_month;
@@ -56,35 +56,62 @@ void loop() {
 
 //  char timeStr[64];
 //  getTime(timeStr, 64);
-
 //  sprintf(stateStr, "err=%-3d  tmp=%-6d  pwrOK=%-2d  rst=%-2d  tim=%s",
 //          errorFlag, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed(), timeStr);
 //  Serial.println(stateStr);
+
+  sprintf(stateStr, "err=%-3d  prof=%d  tmp=%-6d  pwrOK=%-2d  rst=%-2d",
+          errorFlag, currentProfile, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed());
+  Serial.println(stateStr);
+  
   
   logData(temperatureChamber);
   
   // check termal range
+  temp_sense();
 //  if (!isTemperatureInsideBoundries() || (errorFlag & bit(badTemp))) {
+//    Serial.println("> Bad temperature detected");
 //    sendSMSWithError(badTemp);
 //  }
-
-  if (!isPowerOK() || (errorFlag & bit(badPower))) {
-    Serial.println("> Power outage detected");
-    sendSMSWithError(badPower);
-  }
+//
+//  if (!isPowerOK() || (errorFlag & bit(badPower))) {
+//    Serial.print("> Power outage detected "); Serial.println(analogRead(PIN_POWER_INDICATOR));
+//    sendSMSWithError(badPower);
+//    if (isPowerOK())
+//      sendText(powerRestored);
+//  }
 
   
   if (resetBtnPressed()) {
     Serial.println("> Reset ON");
+    sendText(deviceReset);
     errorFlag = 0;
   }
 
   // TODO periodic report
+  sendText(periodicReport);
   
   // read button to change current profile
   if (isProfileBtnRising()) {
     Serial.println("> Profile increment");
     incrementProfile();
+  
+    switch (currentProfile) {
+      case 0: 
+        setLEDs(0, 1, 0, 0, 0);
+      break;
+      case 1: 
+        setLEDs(0, 0, 1, 0, 0);
+      break;
+      case 2: 
+        setLEDs(0, 0, 0, 1, 0);
+      break;
+      case 3: 
+        setLEDs(0, 0, 0, 0, 1);
+      break;
+      default:
+        setLEDs(0, 1, 1, 1, 1);
+    }
   }
 
   // TODO (stretch goal) receive SMS
