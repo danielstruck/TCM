@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define fifteenSec (15000)
+
 //char errorStatus[32];
 // extern int temperatureChamber;
 
