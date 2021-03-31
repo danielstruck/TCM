@@ -52,6 +52,9 @@ void setupInitialProfile() {
     blinkCurrentProfile();
   }
   
+  while (resetBtnPressed())
+    /* do nothing */;
+  
   switch (currentProfile) {
     case 0: 
       setLEDs(0, 1, 0, 0, 0);

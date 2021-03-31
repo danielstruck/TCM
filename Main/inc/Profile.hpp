@@ -1,7 +1,10 @@
 #ifndef _PROFILE_HPP_
 #define _PROFILE_HPP_
 
-typedef struct boundry Boundry;
+class Boundry {
+  public: 
+	int upper, lower;
+};
 
 extern Boundry profile[];
 

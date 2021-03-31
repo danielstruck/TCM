@@ -3,6 +3,7 @@
 #include "inc/HWIO.hpp"
 #include "inc/Errors.h"
 #include "inc/TemperatureDetection.hpp"
+#include "inc/Profile.hpp"
 
 char messageText[128];
 unsigned long timestamp1;
@@ -31,16 +32,16 @@ const char *messages[] = {
 void sendText(int eventNum) {
   unsigned long ms = millis();
   
-  Serial.println("Send text function");
+//  Serial.println("Send text function");
    //char *sendTo = "";
 	 // send an SMS!   
    
-   chooseMessage(eventNum);
 //   millisOverflow(eventNum);
    if (ms < lastSentArray[eventNum])
      nextSentArray[eventNum] -= time_Max;
    
    if (ms >= nextSentArray[eventNum]) {
+      chooseMessage(eventNum);
       fona.sendSMS("7202449051", messageText); //send to => phone numbers
      // fona.sendSMS("2246160041", messageText); //send to => phone numbers
       Serial.println("Send Message");
@@ -73,7 +74,7 @@ void chooseMessage(int eventNum) {
       sprintf(messageText, messages[6]);
       break;
     case periodicReport:
-      sprintf(messageText, messages[7]);
+      sprintf(messageText, messages[7], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
       break;
     case powerRestored:
       sprintf(messageText, messages[8], getBatteryPercentage());
