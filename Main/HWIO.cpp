@@ -2,6 +2,9 @@
 #include "Adafruit_FONA.h"
 #include <SoftwareSerial.h>
 
+
+#define BUTTON_DEBOUNCE_THRESHHOLD (10)
+
 Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
 SoftwareSerial fonaSS = SoftwareSerial(FONA_RX, FONA_TX);
 SoftwareSerial *fonaSerial = &fonaSS;
@@ -65,9 +68,13 @@ void toggleFona() {
   
   digitalWrite(PIN_FONA_KEY, HIGH);
 
-  char err[32];
-  sprintf(err, "ps:%d>%d,on:%d", previousPowerStatus, isFonaOn(), fonaOn);
-  Serial.println(err);
+//  char err[32];
+//  sprintf(err, "ps:%d>%d,on:%d", previousPowerStatus, isFonaOn(), fonaOn);
+//  Serial.println(err);
+  Serial.print("ps:"); Serial.print(previousPowerStatus);
+  Serial.print(">"); Serial.print(isFonaOn());
+  Serial.print(",on:"); Serial.print(fonaOn);
+  Serial.println("");
 }
 
 bool isFonaOn() {
@@ -75,7 +82,7 @@ bool isFonaOn() {
 }
 
 bool isFonaPowered() {
-  Serial.print("PS: "); Serial.print(digitalRead(PIN_FONA_PS)); Serial.print(" == ");Serial.println(HIGH);
+//  Serial.print("PS: "); Serial.print(digitalRead(PIN_FONA_PS)); Serial.print(" == ");Serial.println(HIGH);
   return digitalRead(PIN_FONA_PS) == HIGH;
 }
 

@@ -35,11 +35,22 @@ void setup() {
   Serial.println("Setup complete");
 }
 
+void printState() {
+  Serial.print("err="); Serial.print(errorFlag);
+  Serial.print("prof="); Serial.print(currentProfile);
+  Serial.print("temp="); Serial.print(temperatureChamber);
+  Serial.print("bound="); Serial.print(profile[currentProfile].lower);Serial.print(",");Serial.print(profile[currentProfile].upper);
+  Serial.print("pwrOk="); Serial.print(isPowerOk());
+  Serial.print("rst="); Serial.print(resetBtnPressed());
+  Serial.print("fonaOn="); Serial.print(isFonaOn());
+  Serial.println("");
+}
 void loop() {
-  char stateStr[128];
-  sprintf(stateStr, "err=%-3d  prof=%d  tmp=%-6d  bounds=%-2d  pwrOK=%-2d  rst=%-2d  fonaOn=%-2d",
-          errorFlag, currentProfile, temperatureChamber, isTemperatureInsideBoundries(), isPowerOK(), resetBtnPressed(), isFonaOn());
-  Serial.println(stateStr);
+//  char stateStr[128];
+//  sprintf(stateStr, "err=%-3d  prof=%d  tmp=%-6d  bounds=%-3d,%-3d  pwrOK=%-2d  rst=%-2d  fonaOn=%-2d",
+//          errorFlag, currentProfile, temperatureChamber, profile[currentProfile].lower, profile[currentProfile].upper, isPowerOK(), resetBtnPressed(), isFonaOn());
+//  Serial.println(stateStr);
+  printState();
   
   
   // check termal range

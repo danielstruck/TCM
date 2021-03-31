@@ -7,11 +7,9 @@
 
 void blinkCurrentProfile() {
   static unsigned long nextBlink = 0;
-  static int state = 0;
-
-  unsigned long ms = millis();
-
-  if (ms >= nextBlink) {
+  static bool state = 0;
+  
+  if (millis() >= nextBlink) {
     state = !state;
     nextBlink += 500;
     if (nextBlink > time_Max) {
@@ -19,8 +17,6 @@ void blinkCurrentProfile() {
     }
   }
 
-//  Serial.print("init profile state: "); Serial.println(state);
-//  Serial.print("init profile blink: "); Serial.print(ms); Serial.print("/"); Serial.println(nextBlink);
   if (state == 0) {
     setLEDs(0, 0, 0, 0, 0);
   }
