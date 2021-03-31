@@ -5,8 +5,6 @@
 #include "inc/TemperatureDetection.hpp"
 
 char messageText[128];
-unsigned long timestamp1;
-unsigned long errorDelay;
 unsigned long lastSentArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 unsigned long nextSentArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
