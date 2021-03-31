@@ -4,9 +4,9 @@
 #include "inc/Errors.h"
 #include "inc/TemperatureDetection.hpp"
 
-char messageText[128];
-unsigned long lastSentArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-unsigned long nextSentArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+uint32_t lastSent = 0;
+uint32_t nextSent = 0;
 
 
 //char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?
@@ -26,29 +26,9 @@ const char *messages[] = {
   ""
 };
 
-void sendText(int eventNum) {
-  unsigned long ms = millis();
+char* chooseMessage(int eventNum) {
+  char messageText[128];
   
-  Serial.println("Send text function");
-   //char *sendTo = "";
-	 // send an SMS!   
-   
-   chooseMessage(eventNum);
-//   millisOverflow(eventNum);
-   if (ms < lastSentArray[eventNum])
-     nextSentArray[eventNum] -= time_Max;
-   
-   if (ms >= nextSentArray[eventNum]) {
-      fona.sendSMS("7202449051", messageText); //send to => phone numbers
-     // fona.sendSMS("2246160041", messageText); //send to => phone numbers
-      Serial.println("Send Message");
-      lastSentArray[eventNum] = ms;
-      nextSentArray[eventNum] = ms + fifteenMinutes;
-//      delay(5000); // delay serial print so we know the message has been sent 
-   }
-}
-
-void chooseMessage(int eventNum) {
   Serial.println("choose message function");
   switch(eventNum){
     case badTemp:
@@ -82,11 +62,23 @@ void chooseMessage(int eventNum) {
   }
 
   Serial.print("Message: "); Serial.println(messageText);
+  return messageText;
 }
 
-// void millisOverflow(int eventNum){
-//   unsigned long ms = millis();
-//
-//   if (ms < lastSentArray[eventNum])
-//     nextSentArray[eventNum] -= time_Max;
-//  }
+void sendText(int eventNum) {
+  uint32_t currentTime = millis();
+  char* messageText;
+  Serial.println("Send text function"); 
+   
+  messageText = chooseMessage(eventNum);
+   
+  if ((nextSent < lastSent) && (currentTime >= lastSent)){}
+  else if (currentTime >= nextSent) {
+    fona.sendSMS("7202449051", messageText); //send to => phone numbers
+    // fona.sendSMS("2246160041", messageText); //send to => phone numbers
+    Serial.println("Send Message");
+    lastSent = currentTime;
+    nextSent = currentTime + fifteenMinutes;
+//      delay(5000); // delay serial print so we know the message has been sent 
+   }
+}
