@@ -5,8 +5,8 @@
 #include <SD.h>
 #include <SPI.h>
 
-unsigned long lastLog  = 0;
-unsigned long nextLog  = 0;
+uint32_t lastLog = 0;
+uint32_t nextLog = 0;
 
 //SD.begin(sspin);
 //
@@ -70,15 +70,14 @@ unsigned long nextLog  = 0;
 //}
 
 void logData(int temp) {
-  unsigned long ms = millis();
+  uint32_t currentTime = millis();
   char str[32];
   File myFile;
-  sprintf(str, "%d &d", ms, temp); 
+  sprintf(str, "%d &d", currentTime, temp); 
 
-  if (ms < lastLog)
-    nextLog -= time_Max;
+  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
 
-  if (ms >= nextLog)
+  else if (currentTime >= nextLog)
   {
     myFile = SD.open("log1.txt", FILE_WRITE);
     myFile.println(str);
@@ -88,7 +87,7 @@ void logData(int temp) {
     myFile.println(str);
     myFile.close();
 
-    lastLog = ms;
+    lastLog = currentTime;
     nextLog = lastLog + fifteenSec;
   }
 }
