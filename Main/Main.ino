@@ -95,6 +95,7 @@ void loop() {
   if (isProfileBtnRising()) {
     Serial.println("> Profile increment");
     incrementProfile();
+    sendText(profileSwitched);
   
     switch (currentProfile) {
       case 0: 

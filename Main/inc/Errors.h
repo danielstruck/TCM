@@ -13,6 +13,7 @@ enum events {
 	periodicReport,
 	powerRestored,
 	deviceReset,
+	profileSwitched
 };
 
 void setErrorFlag(int eventNum);
