@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "inc/Logger.hpp"
 #include "inc/MessageSender.hpp"
-//#include <SD.h>
+#include <SDCore.h>
 
 uint32_t lastLog = 0;
 uint32_t nextLog = 0;
@@ -71,7 +71,7 @@ uint32_t nextLog = 0;
 void logData(int temp) {
 //  uint32_t currentTime = millis();
 //  char str[32];
-//  File myFile;
+//  //File myFile;
 //  sprintf(str, "%d &d", currentTime, temp); 
 //
 //  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
