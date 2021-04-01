@@ -69,24 +69,49 @@ uint32_t nextLog = 0;
 //}
 
 void logData(int temp) {
-//  uint32_t currentTime = millis();
-//  char str[32];
-//  //File myFile;
-//  sprintf(str, "%d &d", currentTime, temp); 
-//
-//  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
-//
-//  else if (currentTime >= nextLog)
-//  {
-//    myFile = SD.open("log1.txt", FILE_WRITE);
-//    myFile.println(str);
-//    myFile.close();
-//
-//    myFile = SD.open("log2.txt", FILE_WRITE);
-//    myFile.println(str);
-//    myFile.close();
-//
-//    lastLog = currentTime;
-//    nextLog = lastLog + fifteenSec;
-//  }
+  uint32_t currentTime = millis();
+  char str[32];
+  //File myFile;
+  sprintf(str, "%d &d", currentTime, temp); 
+
+  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
+
+  else if (currentTime >= nextLog)
+  {
+    SDCore.begin("log1.txt", FILE_WRITE);
+    myFile.println(str);
+    ;
+
+    myFile = SD.open("log2.txt", FILE_WRITE);
+    myFile.println(str);
+    myFile.close();
+
+    lastLog = currentTime;
+    nextLog = lastLog + fifteenSec;
+  }
+}
+
+char* convertMillis(uint32_t mils){
+ int dayMillis, hourMillis, minuteMillis, secondMillis;
+ char str[32];
+ 
+ while (mils >= 86400000){
+  mils /= 86400000;
+  dayMillis++;
+  }
+  while (mils >= 3600000){
+    mils /= 3600000;
+    hourMillis++;
+  }
+  while (mils >= 60000){
+    mils /= 60000;
+    minuteMillis++;
+  }
+  while (mils >= 1000){
+    mils /= 1000;
+    secondMillis++;
+  }
+
+  sprintf(str, "%4d %2d %2d &2d", dayMillis, hourMillis, minuteMillis, secondMillis);
+  return str;
 }
