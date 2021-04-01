@@ -48,33 +48,33 @@ uint16_t getBatteryPercentage() {
   if (!fona.getBattPercent(&vPer)) {
     vPer = -1;
   }
-  char str[32]; sprintf(str, "battery = %d", vPer);
-  Serial.println(str);
+//  char str[32]; sprintf(str, "battery = %d", vPer);
+//  DEBUG_PRINT(F("battery = ")); DEBUG_PRINTLN(vPer)
   return vPer;
 }
 
 void toggleFona() {
   digitalWrite(PIN_FONA_KEY, LOW);
-  Serial.println("key -> low");
+  DEBUG_PRINTLN(F("key -> low"));
   int previousPowerStatus = digitalRead(PIN_FONA_PS);
   delay(6000);
   
   while (!isFonaPowered()) {
-    Serial.println("Fona not powered");
+    DEBUG_PRINTLN(F("Fona not powered"));
     setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
   }
-  Serial.println("Fona powered");
+  DEBUG_PRINTLN(F("Fona powered"));
   fonaOn = !fonaOn;
   
   digitalWrite(PIN_FONA_KEY, HIGH);
 
 //  char err[32];
 //  sprintf(err, "ps:%d>%d,on:%d", previousPowerStatus, isFonaOn(), fonaOn);
-//  Serial.println(err);
-  Serial.print("ps:"); Serial.print(previousPowerStatus);
-  Serial.print(">"); Serial.print(isFonaOn());
-  Serial.print(",on:"); Serial.print(fonaOn);
-  Serial.println("");
+//  DEBUG_PRINTLN(err);
+//  DEBUG_PRINT("ps:"); DEBUG_PRINT(previousPowerStatus);
+//  DEBUG_PRINT(">"); DEBUG_PRINT(isFonaOn());
+//  DEBUG_PRINT(",on:"); DEBUG_PRINT(fonaOn);
+//  DEBUG_PRINTLN("");
 }
 
 bool isFonaOn() {
@@ -82,7 +82,7 @@ bool isFonaOn() {
 }
 
 bool isFonaPowered() {
-//  Serial.print("PS: "); Serial.print(digitalRead(PIN_FONA_PS)); Serial.print(" == ");Serial.println(HIGH);
+//  DEBUG_PRINT("PS: "); DEBUG_PRINT(digitalRead(PIN_FONA_PS)); DEBUG_PRINT(" == ");DEBUG_PRINTLN(HIGH);
   return digitalRead(PIN_FONA_PS) == HIGH;
 }
 

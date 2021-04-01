@@ -52,7 +52,7 @@ void blinkLED() {
 }
 
 //void blinkShort(){
-//  Serial.println("blink short");
+//  DEBUG_PRINTLN("blink short");
 //  setErrorLEDOn();
 //  delay(500);
 //  setErrorLEDOff();
@@ -60,7 +60,7 @@ void blinkLED() {
 //}
 //
 //void blinkLong() {
-//  Serial.println("blink long");
+//  DEBUG_PRINTLN("blink long");
 //  setErrorLEDOn();
 //  delay(1000);
 //  setErrorLEDOff();
