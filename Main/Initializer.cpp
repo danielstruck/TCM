@@ -3,10 +3,11 @@
 #include "inc/Profile.hpp"
 #include "inc/Errors.h"
 #include "inc/MessageSender.hpp"
+#include <SD.h>
 
 
 void blinkCurrentProfile() {
-  static unsigned long nextBlink = 0;
+  static uint32_t nextBlink = 0;
   static bool state = 0;
   
   if (millis() >= nextBlink) {
@@ -101,7 +102,7 @@ void setupFona() {
 }
 
 void setupLogger(){
-  
+  SD.begin();
 }
 
 void setupPins() {

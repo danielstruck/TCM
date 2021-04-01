@@ -3,7 +3,7 @@
 #include "inc/Logger.hpp"
 #include "inc/MessageSender.hpp"
 #include <SD.h>
-#include <SPI.h>
+//#include <SPI.h>
 
 uint32_t lastLog = 0;
 uint32_t nextLog = 0;

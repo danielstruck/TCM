@@ -23,8 +23,6 @@
 #define PIN_BTN_RST    (16) // reset button input 
 #define PIN_FONA_PS    (17) // power status pin on Fona
 
-#define BUTTON_DEBOUNCE_THRESHHOLD (10)
-
 
 extern Adafruit_FONA_3G fona;
 extern SoftwareSerial fonaSS;

@@ -40,7 +40,7 @@ void printState() {
   Serial.print("prof="); Serial.print(currentProfile);
   Serial.print("temp="); Serial.print(temperatureChamber);
   Serial.print("bound="); Serial.print(profile[currentProfile].lower);Serial.print(",");Serial.print(profile[currentProfile].upper);
-  Serial.print("pwrOk="); Serial.print(isPowerOk());
+  Serial.print("pwrOk="); Serial.print(isPowerOK());
   Serial.print("rst="); Serial.print(resetBtnPressed());
   Serial.print("fonaOn="); Serial.print(isFonaOn());
   Serial.println("");
@@ -72,7 +72,7 @@ void loop() {
   }
 
   
-  if (resetBtnPressed()) {
+  if (resetBtnPressed() && errorFlag != 0) {
     Serial.println("> Reset ON");
     sendText(deviceReset);
     errorFlag = 0;
