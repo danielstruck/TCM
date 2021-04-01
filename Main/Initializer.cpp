@@ -72,20 +72,20 @@ void setupInitialProfile() {
 }
 
 void setupFona() {
-  if (!isFonaPowered()) {
-    DEBUG_PRINTLN(F("Turn Fona power on"));
-    toggleFona();
-  }
-  
-  DEBUG_PRINTLN(F("Begin fona serial"));
-  fonaSerial->begin(4800);
-  
   DEBUG_PRINTLN(F("start up fona communications"));
-  bool isFonaNotStarted;
-  for (int tries = 3; tries > 0 && (isFonaNotStarted = !fona.begin(*fonaSerial)); tries--)
+  int triesRemaining = 3;
+  do {
+    if (!isFonaPowered()) {
+      DEBUG_PRINTLN(F("Turn Fona power on"));
+      toggleFona();
+    }
+    DEBUG_PRINTLN(F("Begin fona serial"));
+    fonaSerial->begin(4800);
+    
     DEBUG_PRINTLN(F("fona communications failed"));
+  } while (!fona.begin(*fonaSerial) && --triesRemaining > 0);
   
-  if (isFonaNotStarted) {
+  if (triesRemaining > 0) {
     setErrorFlag(cannotStartFona);
     blinkLED();
     while (1);

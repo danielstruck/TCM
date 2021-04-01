@@ -19,7 +19,7 @@ void setup() {
   setLEDs(1, 1, 1, 1, 1);
   while(!Serial);
   Serial.begin(115200);
-  delay(5000);
+//  delay(5000);
   setLEDs(0, 0, 0, 0, 0);
 
   // enable and start up Fona 3G
@@ -37,12 +37,12 @@ void setup() {
 
 void printState() {
   DEBUG_PRINT(F("err=")); DEBUG_PRINT(errorFlag);
-  DEBUG_PRINT(F("prof=")); DEBUG_PRINT(currentProfile);
-  DEBUG_PRINT(F("temp=")); DEBUG_PRINT(temperatureChamber);
-  DEBUG_PRINT(F("bound=")); DEBUG_PRINT(profile[currentProfile].lower);DEBUG_PRINT(",");DEBUG_PRINT(profile[currentProfile].upper);
-  DEBUG_PRINT(F("pwrOk=")); DEBUG_PRINT(isPowerOK());
-  DEBUG_PRINT(F("rst=")); DEBUG_PRINT(resetBtnPressed());
-  DEBUG_PRINT(F("fonaOn=")); DEBUG_PRINT(isFonaOn());
+  DEBUG_PRINT(F("__prof=")); DEBUG_PRINT(currentProfile);
+  DEBUG_PRINT(F("__temp=")); DEBUG_PRINT(temperatureChamber);
+  DEBUG_PRINT(F("__bound=")); DEBUG_PRINT(profile[currentProfile].lower);DEBUG_PRINT(",");DEBUG_PRINT(profile[currentProfile].upper);
+  DEBUG_PRINT(F("__pwrOk=")); DEBUG_PRINT(isPowerOK());
+  DEBUG_PRINT(F("__rst=")); DEBUG_PRINT(resetBtnPressed());
+  DEBUG_PRINT(F("__fonaOn=")); DEBUG_PRINT(isFonaOn());
   DEBUG_PRINTLN(F(""));
 }
 void loop() {
