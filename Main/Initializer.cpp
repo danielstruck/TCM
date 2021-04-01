@@ -3,7 +3,7 @@
 #include "inc/Profile.hpp"
 #include "inc/Errors.h"
 #include "inc/MessageSender.hpp"
-#include <SD.h>
+//#include <SD.h>
 
 
 void blinkCurrentProfile() {
@@ -102,7 +102,7 @@ void setupFona() {
 }
 
 void setupLogger(){
-  SD.begin();
+  //SD.begin();
 }
 
 void setupPins() {

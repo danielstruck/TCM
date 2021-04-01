@@ -1,10 +1,11 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "inc/Logger.hpp"
 #include "inc/MessageSender.hpp"
-//#include <SD.h>
+#include "SDFat.h"
 //#include <SPI.h>
-#include <SDCore.h>
+//#include <SDCore.h>
 
 
 uint32_t lastLog = 0;
@@ -72,26 +73,26 @@ uint32_t nextLog = 0;
 //}
 
 void logData(int temp) {
-  uint32_t currentTime = millis();
-  char str[32];
-  //File myFile;
-  sprintf(str, "%d &d", currentTime, temp); 
-
-  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
-
-  else if (currentTime >= nextLog)
-  {
-    SDCore.begin("log1.txt", FILE_WRITE);
-    myFile.println(str);
-    ;
-
-    myFile = SD.open("log2.txt", FILE_WRITE);
-    myFile.println(str);
-    myFile.close();
-
-    lastLog = currentTime;
-    nextLog = lastLog + fifteenSec;
-  }
+//  uint32_t currentTime = millis();
+//  char str[32];
+//  File myFile;
+//  sprintf(str, "%d &d", currentTime, temp); 
+//
+//  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
+//
+//  else if (currentTime >= nextLog)
+//  {
+//    myFile = SD.open("log1.txt", FILE_WRITE);
+//    myFile.println(str);
+//    myFile.close();
+//
+//    myFile = SD.open("log2.txt", FILE_WRITE);
+//    myFile.println(str);
+//    myFile.close();
+//
+//    lastLog = currentTime;
+//    nextLog = lastLog + fifteenSec;
+//  }
 }
 
 char* convertMillis(uint32_t mils){
@@ -115,6 +116,6 @@ char* convertMillis(uint32_t mils){
     secondMillis++;
   }
 
-  sprintf(str, "%4d %2d %2d &2d", dayMillis, hourMillis, minuteMillis, secondMillis);
+  sprintf(str, "%4d %2d %2d %2d", dayMillis, hourMillis, minuteMillis, secondMillis);
   return str;
 }

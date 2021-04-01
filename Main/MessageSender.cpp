@@ -7,9 +7,8 @@
 
 uint32_t lastSent = 0;
 uint32_t nextSent = 0;
-
-
-//char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?
+uint32_t lastPeriodic = 0;
+uint32_t nextPeriodic = 0;
 
 // make message for when profile is changed
 const char* messages[] = {
@@ -23,7 +22,7 @@ const char* messages[] = {
   "Periodic Report: Range is %d to %d. Current Temperature is %d",
   "POWER RESTORED: Current Battery %% is %d",
   "Device reset button pressed. Restarting operations",
-  ""
+  "Profile Switched: Range is %d to %d. Current Temperature is %d"
 };
 
 char* chooseMessage(int eventNum) {
@@ -70,15 +69,35 @@ void sendText(int eventNum) {
 	char* messageText;
 	Serial.println("Send text function");
 
-	messageText = chooseMessage(eventNum);
+	
 
-	if ((nextSent < lastSent) && (currentTime >= lastSent)) {}
+  if (eventNum == powerRestored){
+    messageText = chooseMessage(eventNum);
+    fona.sendSMS("7202449051", messageText);
+  }
+  else if (eventNum == profileSwitched){
+    messageText = chooseMessage(eventNum);
+    fona.sendSMS("7202449051", messageText);
+  }
+  else if (eventNum == periodicReport){
+    if ((nextPeriodic < lastPeriodic) && (currentTime >= lastPeriodic)){}
+    else if (currentTime >= lastPeriodic){
+      messageText = chooseMessage(eventNum);
+      fona.sendSMS("7202449051", messageText);
+      lastPeriodic = currentTime;
+      nextPeriodic = currentTime + twentyfourHours;
+    }
+  }
+	else if ((nextSent < lastSent) && (currentTime >= lastSent)){}
 	else if (currentTime >= nextSent) {
+    messageText = chooseMessage(eventNum);
 		fona.sendSMS("7202449051", messageText); //send to => phone numbers
 		// fona.sendSMS("2246160041", messageText); //send to => phone numbers
 		Serial.println("Send Message");
 		lastSent = currentTime;
-		nextSent = currentTime + fifteenMinutes;
+    nextSent = currentTime + fifteenMinutes;
+               
+		
 		//      delay(5000); // delay serial print so we know the message has been sent 
 	}
 }
