@@ -72,6 +72,31 @@ uint32_t nextLog = 0;
 //  return arr;
 //}
 
+char* convertMillis(uint32_t mils){
+ int dayMillis, hourMillis, minuteMillis, secondMillis;
+ char str[32];
+ 
+ while (mils >= 86400000){
+  mils /= 86400000;
+  dayMillis++;
+  }
+  while (mils >= 3600000){
+    mils /= 3600000;
+    hourMillis++;
+  }
+  while (mils >= 60000){
+    mils /= 60000;
+    minuteMillis++;
+  }
+  while (mils >= 1000){
+    mils /= 1000;
+    secondMillis++;
+  }
+
+  sprintf(str, "%4d %2d %2d %2d", dayMillis, hourMillis, minuteMillis, secondMillis);
+  return str;
+}
+
 void logData(int temp) {
 
   uint32_t currentTime = millis();
@@ -96,29 +121,4 @@ void logData(int temp) {
     lastLog = currentTime;
     nextLog = lastLog + fifteenSec;
   }
-}
-
-char* convertMillis(uint32_t mils){
- int dayMillis, hourMillis, minuteMillis, secondMillis;
- char str[32];
- 
- while (mils >= 86400000){
-  mils /= 86400000;
-  dayMillis++;
-  }
-  while (mils >= 3600000){
-    mils /= 3600000;
-    hourMillis++;
-  }
-  while (mils >= 60000){
-    mils /= 60000;
-    minuteMillis++;
-  }
-  while (mils >= 1000){
-    mils /= 1000;
-    secondMillis++;
-  }
-
-  sprintf(str, "%4d %2d %2d %2d", dayMillis, hourMillis, minuteMillis, secondMillis);
-  return str;
 }
