@@ -3,8 +3,8 @@
 #include "inc/Profile.hpp"
 #include "inc/Errors.h"
 #include "inc/MessageSender.hpp"
-#include <SD.h>
-//#include "inc/SD.h"
+//#include <SD.h>
+
 
 
 void blinkCurrentProfile() {
@@ -91,9 +91,9 @@ void setupFona() {
     while (1);
   }
     
-//  DEBUG_PRINTLN("Enable RTC");
-//  if (!fona.enableRTC(1))
-//    DEBUG_PRINTLN("Failed to enable RTC");
+  DEBUG_PRINTLN("Enable RTC");
+  if (!fona.enableRTC(1))
+    DEBUG_PRINTLN("Failed to enable RTC");
 
   DEBUG_PRINTLN(F("Enable network time sync"));
   for (int tries = 5; tries > 0 && !fona.enableNetworkTimeSync(1); tries--)
@@ -103,7 +103,7 @@ void setupFona() {
 }
 
 void setupLogger(){
-  SD.begin();
+  //SD.begin();
 }
 
 void setupPins() {

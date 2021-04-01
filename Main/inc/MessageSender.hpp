@@ -6,6 +6,7 @@
 #define time_Max (4294967295)
 // (900,000); //Fifteen minutes worth of milliseconds
 #define fifteenMinutes (900000)
+#define twentyfourHours (86400000)
 
 
 //extern char messageText[128];
