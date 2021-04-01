@@ -100,11 +100,10 @@ char* convertMillis(uint32_t mils){
 void logData(int temp) {
 
   uint32_t currentTime = millis();
-  char str[32], milTime[32];
-  
+  char str[32];
   File myFile;
-  milTime = convertMillis(currentTime);
-  sprintf(str, "%c &d", milTime, temp); 
+  convertMillis(currentTime);
+  sprintf(str, "%s &d", convertMillis(currentTime), temp); 
 
   if ((nextLog < lastLog) && (currentTime >= lastLog)){}
 
