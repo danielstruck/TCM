@@ -3,7 +3,7 @@
 
 class Boundry {
   public: 
-	char16_t upper, lower;
+	int upper, lower;
 };
 
 extern Boundry profile[];
