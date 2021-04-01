@@ -12,7 +12,7 @@ uint32_t nextSent = 0;
 //char sendTo[8][16] = {"7202449051", "2246160041"}; // How to send to two numbers => Loop that uses a different char every time?
 
 // make message for when profile is changed
-const char* messages[] = {
+const char *messages[] = {
   "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d",
   "WARNING: Power outage. Current Battery %%: %d",
   "",
@@ -29,14 +29,14 @@ const char* messages[] = {
 char* chooseMessage(int eventNum) {
 	char messageText[128];
 
-	Serial.println("choose message function");
+	DEBUG_PRINTLN(F("choose message function"));
 	switch (eventNum) {
 	case badTemp:
 		sprintf(messageText, messages[0], temperatureChamber);
 		break;
 	case badPower:
 		sprintf(messageText, messages[1], getBatteryPercentage());
-		Serial.println("Bad power set");
+		DEBUG_PRINTLN(F("Bad power set"));
 		break;
 		/* case lowBattery:
 		   sprintf(messageText, messages[3], getBatteryPercentage());
@@ -61,14 +61,14 @@ char* chooseMessage(int eventNum) {
 		break;
 	}
 
-	Serial.print("Message: "); Serial.println(messageText);
+	DEBUG_PRINT(F("Message: ")); DEBUG_PRINTLN(messageText);
 	return messageText;
 }
 
 void sendText(int eventNum) {
 	uint32_t currentTime = millis();
 	char* messageText;
-	Serial.println("Send text function");
+	DEBUG_PRINTLN(F("Send text function"));
 
 	messageText = chooseMessage(eventNum);
 
@@ -76,7 +76,7 @@ void sendText(int eventNum) {
 	else if (currentTime >= nextSent) {
 		fona.sendSMS("7202449051", messageText); //send to => phone numbers
 		// fona.sendSMS("2246160041", messageText); //send to => phone numbers
-		Serial.println("Send Message");
+		DEBUG_PRINTLN(F("Send Message"));
 		lastSent = currentTime;
 		nextSent = currentTime + fifteenMinutes;
 		//      delay(5000); // delay serial print so we know the message has been sent 

@@ -32,38 +32,34 @@ void setup() {
   setupInitialProfile();
   
   
-  Serial.println("Setup complete");
+  DEBUG_PRINTLN(F("Setup complete"));
 }
 
 void printState() {
-  Serial.print("err="); Serial.print(errorFlag);
-  Serial.print("prof="); Serial.print(currentProfile);
-  Serial.print("temp="); Serial.print(temperatureChamber);
-  Serial.print("bound="); Serial.print(profile[currentProfile].lower);Serial.print(",");Serial.print(profile[currentProfile].upper);
-  Serial.print("pwrOk="); Serial.print(isPowerOK());
-  Serial.print("rst="); Serial.print(resetBtnPressed());
-  Serial.print("fonaOn="); Serial.print(isFonaOn());
-  Serial.println("");
+  DEBUG_PRINT(F("err=")); DEBUG_PRINT(errorFlag);
+  DEBUG_PRINT(F("prof=")); DEBUG_PRINT(currentProfile);
+  DEBUG_PRINT(F("temp=")); DEBUG_PRINT(temperatureChamber);
+  DEBUG_PRINT(F("bound=")); DEBUG_PRINT(profile[currentProfile].lower);DEBUG_PRINT(",");DEBUG_PRINT(profile[currentProfile].upper);
+  DEBUG_PRINT(F("pwrOk=")); DEBUG_PRINT(isPowerOK());
+  DEBUG_PRINT(F("rst=")); DEBUG_PRINT(resetBtnPressed());
+  DEBUG_PRINT(F("fonaOn=")); DEBUG_PRINT(isFonaOn());
+  DEBUG_PRINTLN(F(""));
 }
 void loop() {
-//  char stateStr[128];
-//  sprintf(stateStr, "err=%-3d  prof=%d  tmp=%-6d  bounds=%-3d,%-3d  pwrOK=%-2d  rst=%-2d  fonaOn=%-2d",
-//          errorFlag, currentProfile, temperatureChamber, profile[currentProfile].lower, profile[currentProfile].upper, isPowerOK(), resetBtnPressed(), isFonaOn());
-//  Serial.println(stateStr);
   printState();
   
   
   // check termal range
   temp_sense();
   if (!isTemperatureInsideBoundries() || (errorFlag & bit(badTemp))) {
-    Serial.println("> Bad temperature detected");
+    DEBUG_PRINTLN(F("> Bad temperature detected"));
     sendSMSWithError(badTemp);
   }
   
   logData(temperatureChamber);
 
   if (!isPowerOK() || (errorFlag & bit(badPower))) {
-    Serial.print("> Power outage detected "); Serial.println(analogRead(PIN_POWER_INDICATOR));
+    DEBUG_PRINT(F("> Power outage detected ")); DEBUG_PRINTLN(analogRead(PIN_POWER_INDICATOR));
     sendSMSWithError(badPower);
     
     if (isPowerOK()) {
@@ -73,7 +69,7 @@ void loop() {
 
   
   if (resetBtnPressed() && errorFlag != 0) {
-    Serial.println("> Reset ON");
+    DEBUG_PRINTLN(F("> Reset ON"));
     sendText(deviceReset);
     errorFlag = 0;
   }
@@ -83,7 +79,7 @@ void loop() {
   
   // read button to change current profile
   if (isProfileBtnRising()) {
-    Serial.println("> Profile increment");
+    DEBUG_PRINTLN(F("> Profile increment"));
     incrementProfile();
     sendText(profileSwitched);
   

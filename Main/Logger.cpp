@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include "inc/Logger.hpp"
 #include "inc/MessageSender.hpp"
-//#include <SD.h>
+#include <SD.h>
 //#include <SPI.h>
-#include <SDCore.h>
+//#include <SDCore.h>
+//#include "inc/SD.h"
+
 
 
 uint32_t lastLog = 0;
@@ -81,13 +83,13 @@ void logData(int temp) {
 
   else if (currentTime >= nextLog)
   {
-    SDCore.begin("log1.txt", FILE_WRITE);
-    myFile.println(str);
+//    SDCore.begin("log1.txt", FILE_WRITE);
+//    myFile.println(str);
     ;
 
-    myFile = SD.open("log2.txt", FILE_WRITE);
-    myFile.println(str);
-    myFile.close();
+//    myFile = SD.open("log2.txt", FILE_WRITE);
+//    myFile.println(str);
+//    myFile.close();
 
     lastLog = currentTime;
     nextLog = lastLog + fifteenSec;
