@@ -109,9 +109,9 @@ void logData(int temp) {
 
   else if (currentTime >= nextLog)
   {
-    myFile = SD.begin("log1.txt", FILE_WRITE);
+    myFile = SD.open("log1.txt", FILE_WRITE);
     myFile.println(str);
-	  myFile.close;
+	  myFile.close();
 
     myFile = SD.open("log2.txt", FILE_WRITE);
     myFile.println(str);
