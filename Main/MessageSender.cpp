@@ -3,7 +3,6 @@
 #include "inc/HWIO.hpp"
 #include "inc/Errors.h"
 #include "inc/TemperatureDetection.hpp"
-#include "inc/Profile.hpp"
 
 uint32_t lastSent = 0;
 uint32_t nextSent = 0;
@@ -14,10 +13,10 @@ uint32_t nextPeriodic = 0;
 const char *messages[] = {
   "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d",
   "WARNING: Power outage. Current Battery %%: %d",
-  "@2",
-  "@3",
-  "@4",
-  "@5",
+  "",
+  "",
+  "",
+  "",
   "WARNING: Thermister not detected.",
   "Periodic Report: Range is %d to %d. Current Temperature is %d",
   "POWER RESTORED: Current Battery %% is %d",
@@ -50,7 +49,7 @@ char* chooseMessage(int eventNum) {
 //		sprintf(messageText, messages[6]);
 //		break;
 	case periodicReport:
-		sprintf(messageText, messages[7], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
+		sprintf(messageText, messages[7]);
 		break;
 	case powerRestored:
 		sprintf(messageText, messages[8], getBatteryPercentage());
@@ -71,15 +70,16 @@ void sendError(){
   if ((nextSent < lastSent) && (currentTime >= lastSent)){}
   else if (currentTime >= nextSent) {
   for (int i = 0; i < 7; i++){
-    if (errorFlag & bit(i))
-      messageText += "\n";
-      messageText += messages[i];
+    if (errorFlag & bit(i)){}
+//      messageText // "\n";
+//      messageText // messages[i];
   }
   fona.sendSMS("7202449051", messageText); //send to => phone numbers
     // fona.sendSMS("2246160041", messageText); //send to => phone numbers
   DEBUG_PRINTLN(F("Send Message"));
   lastSent = currentTime;
   nextSent = currentTime + fifteenMinutes;
+  }
 }
 
 void sendText(int eventNum) {
