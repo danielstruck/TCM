@@ -7,6 +7,7 @@
 //#include <SPI.h>
 //#include <SDCore.h>
 //#include "inc/SD.h"
+#include "Adafruit_FONA.h"
 
 uint32_t lastLog = 0;
 uint32_t nextLog = 0;
