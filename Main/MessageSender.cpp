@@ -26,7 +26,7 @@ const char *messages[] = {
 };
 
 char* chooseMessage(int eventNum) {
-	char messageText[128];
+	char messageText[128]; // !!! potential resource leak - move to its own function to fix
 
 	DEBUG_PRINTLN(F("choose message function"));
 	switch (eventNum) {
@@ -65,15 +65,18 @@ char* chooseMessage(int eventNum) {
 }
 
 void sendError(){
-  char* messageText ="WARNING";
+  char messageText[256];
+  sprintf(messageText, "WARNING");
   uint32_t currentTime = millis();
   
   if ((nextSent < lastSent) && (currentTime >= lastSent)){}
   else if (currentTime >= nextSent) {
-  for (int i = 0; i < 7; i++){
-    if (errorFlag & bit(i))
-      messageText += "\n";
-      messageText += messages[i];
+    for (int i = 0; i < 7; i++){
+      if (errorFlag & bit(i)) {
+        strcat(messageText, "\n");
+        strcat(messageText, messages[i]);
+      }
+    }
   }
   fona.sendSMS("7202449051", messageText); //send to => phone numbers
     // fona.sendSMS("2246160041", messageText); //send to => phone numbers
@@ -113,5 +116,5 @@ void sendText(int eventNum) {
                
 		
 		//      delay(5000); // delay serial print so we know the message has been sent 
-	}
+//	}
 }

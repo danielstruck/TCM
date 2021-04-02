@@ -56,12 +56,15 @@ void loop() {
   logData(temperatureChamber);
 
   if (!isPowerOK() || (errorFlag & bit(badPower))) {
+    bool lastPowerState = false;
     DEBUG_PRINT(F("> Power outage detected ")); DEBUG_PRINTLN(analogRead(PIN_POWER_INDICATOR));
     setErrorFlag(badPower);
     
-    if (isPowerOK()) {
+    if (!lastPowerState && isPowerOK()) {
       sendText(powerRestored);
     }
+
+    lastPowerState = isPowerOK();
   }
 
   

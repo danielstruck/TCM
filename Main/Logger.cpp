@@ -111,6 +111,7 @@ void logData(int temp) {
 
   else if (currentTime >= nextLog)
   {
+    DEBUG_PRINTLN(F("logging..."));
     myFile = SD.open("log1.txt", FILE_WRITE);
     myFile.println(str);
 	  myFile.close();
