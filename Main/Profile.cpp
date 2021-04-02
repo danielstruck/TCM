@@ -10,7 +10,7 @@ Boundry profile[] = {
 
 int currentProfile = 0;
 
-Boundry defineBoundry(int upper, int lower) {
+Boundry defineBoundry(int lower, int upper) {
   Boundry b;
   b.upper = upper;
   b.lower = lower;

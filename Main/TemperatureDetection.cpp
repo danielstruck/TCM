@@ -7,8 +7,8 @@ int temperatureChamber;
 
 
 bool isTemperatureInsideBoundries() {
-  return profile[currentProfile].lower >= temperatureChamber &&
-         profile[currentProfile].upper <= temperatureChamber;
+  return temperatureChamber >= profile[currentProfile].lower &&
+         temperatureChamber <= profile[currentProfile].upper;
 }
 
 void temp_sense()

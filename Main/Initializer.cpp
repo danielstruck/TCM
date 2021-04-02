@@ -3,8 +3,7 @@
 #include "inc/Profile.hpp"
 #include "inc/Errors.h"
 #include "inc/MessageSender.hpp"
-//#include <SD.h>
-
+#include <SD.h>
 
 
 void blinkCurrentProfile() {
@@ -72,28 +71,28 @@ void setupInitialProfile() {
 }
 
 void setupFona() {
-  DEBUG_PRINTLN(F("start up fona communications"));
-  int triesRemaining = 3;
-  do {
-    if (!isFonaPowered()) {
-      DEBUG_PRINTLN(F("Turn Fona power on"));
-      toggleFona();
-    }
-    DEBUG_PRINTLN(F("Begin fona serial"));
-    fonaSerial->begin(4800);
-    
-    DEBUG_PRINTLN(F("fona communications failed"));
-  } while (!fona.begin(*fonaSerial) && --triesRemaining > 0);
+  if (!isFonaPowered()) {
+    DEBUG_PRINTLN(F("Turn Fona power on"));
+    toggleFona();
+  }
   
-  if (triesRemaining > 0) {
+  DEBUG_PRINTLN(F("Begin fona serial"));
+  fonaSerial->begin(4800);
+  
+  DEBUG_PRINTLN(F("start up fona communications"));
+  bool isFonaNotStarted;
+  for (int tries = 3; tries > 0 && (isFonaNotStarted = !fona.begin(*fonaSerial)); tries--)
+    DEBUG_PRINTLN(F("fona communications failed"));
+  
+  if (isFonaNotStarted) {
     setErrorFlag(cannotStartFona);
     blinkLED();
     while (1);
   }
     
-  DEBUG_PRINTLN("Enable RTC");
-  if (!fona.enableRTC(1))
-    DEBUG_PRINTLN("Failed to enable RTC");
+//  DEBUG_PRINTLN(F("Enable RTC"));
+//  if (!fona.enableRTC(1))
+//    DEBUG_PRINTLN(F("Failed to enable RTC"));
 
   DEBUG_PRINTLN(F("Enable network time sync"));
   for (int tries = 5; tries > 0 && !fona.enableNetworkTimeSync(1); tries--)
@@ -103,7 +102,7 @@ void setupFona() {
 }
 
 void setupLogger(){
-  //SD.begin();
+//  SD.begin();
 }
 
 void setupPins() {

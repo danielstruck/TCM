@@ -8,9 +8,6 @@
 #include "inc/TemperatureDetection.hpp"
 
 
-void sendSMSWithError(int errorCode); // TODO move this to file MessageSender?
-
-
 void setup() {
   // initialize pins
   setupPins();
@@ -53,14 +50,14 @@ void loop() {
   temp_sense();
   if (!isTemperatureInsideBoundries() || (errorFlag & bit(badTemp))) {
     DEBUG_PRINTLN(F("> Bad temperature detected"));
-    sendSMSWithError(badTemp);
+    setErrorFlag(badTemp);
   }
   
   logData(temperatureChamber);
 
   if (!isPowerOK() || (errorFlag & bit(badPower))) {
     DEBUG_PRINT(F("> Power outage detected ")); DEBUG_PRINTLN(analogRead(PIN_POWER_INDICATOR));
-    sendSMSWithError(badPower);
+    setErrorFlag(badPower);
     
     if (isPowerOK()) {
       sendText(powerRestored);
@@ -75,7 +72,9 @@ void loop() {
   }
 
   // TODO periodic report
-  sendText(periodicReport);
+  if (!errorFlag) {
+    sendText(periodicReport);
+  }
   
   // read button to change current profile
   if (isProfileBtnRising()) {
@@ -106,10 +105,7 @@ void loop() {
 
   // display any error codes on the error LED
   blinkLED();
-}
 
-
-void sendSMSWithError(int eventCode) {
-    setErrorFlag(eventCode);
-    sendText(eventCode);
+  // send error SMS messages
+  sendError();
 }

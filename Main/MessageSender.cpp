@@ -3,6 +3,7 @@
 #include "inc/HWIO.hpp"
 #include "inc/Errors.h"
 #include "inc/TemperatureDetection.hpp"
+#include "inc/Profile.hpp"
 
 uint32_t lastSent = 0;
 uint32_t nextSent = 0;
@@ -13,10 +14,10 @@ uint32_t nextPeriodic = 0;
 const char *messages[] = {
   "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d",
   "WARNING: Power outage. Current Battery %%: %d",
-  "",
-  "",
-  "",
-  "",
+  "@2",
+  "@3",
+  "@4",
+  "@5",
   "WARNING: Thermister not detected.",
   "Periodic Report: Range is %d to %d. Current Temperature is %d",
   "POWER RESTORED: Current Battery %% is %d",
@@ -49,7 +50,7 @@ char* chooseMessage(int eventNum) {
 //		sprintf(messageText, messages[6]);
 //		break;
 	case periodicReport:
-		sprintf(messageText, messages[7]);
+		sprintf(messageText, messages[7], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
 		break;
 	case powerRestored:
 		sprintf(messageText, messages[8], getBatteryPercentage());
