@@ -105,7 +105,9 @@ void logData(int temp) {
   convertMillis(currentTime);
   sprintf(str, "%s &d", convertMillis(currentTime), temp); 
 
-  if ((nextLog < lastLog) && (currentTime >= lastLog)){}
+  if ((nextLog < lastLog) && (currentTime >= lastLog)){
+    //does nothing
+    }
 
   else if (currentTime >= nextLog)
   {
