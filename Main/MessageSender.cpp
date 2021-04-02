@@ -25,49 +25,52 @@ const char *messages[] = {
   "Profile Switched: Range is %d to %d. Current Temperature is %d"
 };
 
-void sendError(){
-  String messageText ="WARNING";
+void sendError() {
+  String messageText = "WARNING";
   uint32_t currentTime = millis();
-  
-  if ((nextSent < lastSent) && (currentTime >= lastSent)){}
+
+  if ((nextSent < lastSent) && (currentTime >= lastSent)) {}
   else if (currentTime >= nextSent) {
-  for (int i = 0; i < 7; i++){
-    if (errorFlag & bit(i)){}
+    for (int i = 0; i < 7; i++) {
+      if (errorFlag & bit(i)) {}
       messageText += "\n";
       messageText += messages[i];
-  }
-  fona.sendSMS("7202449051", messageText.c_str()); //send to => phone numbers
-  // fona.sendSMS("2246160041", messageText); //send to => phone numbers
-  DEBUG_PRINTLN(F("Send Message"));
-  lastSent = currentTime;
-  nextSent = currentTime + fifteenMinutes;
+    }
+    fona.sendSMS("7202449051", messageText.c_str()); //send to => phone numbers
+    // fona.sendSMS("2246160041", messageText); //send to => phone numbers
+    DEBUG_PRINTLN(F("Send Message"));
+    lastSent = currentTime;
+    nextSent = currentTime + fifteenMinutes;
   }
 }
 
 void sendText(int eventNum) {
-	uint32_t currentTime = millis();
+  uint32_t currentTime = millis();
   char* messageText;
-	DEBUG_PRINTLN(F("Send text function"));
+  DEBUG_PRINTLN(F("Send text function"));
 
-  switch (eventNum){
+  switch (eventNum) {
     case powerRestored:
       sprintf(messageText, messages[eventNum], getBatteryPercentage());
+      fona.sendSMS("7202449051", messageText);
       break;
-     case profileSwitched:
+    case profileSwitched:
       sprintf(messageText, messages[eventNum], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
+      fona.sendSMS("7202449051", messageText);
       break;
-     case deviceReset:
+    case deviceReset:
       sprintf(messageText, messages[eventNum]);
+      fona.sendSMS("7202449051", messageText);
       break;
-     case periodicReport:
-      if ((nextPeriodic < lastPeriodic) && (currentTime >= lastPeriodic)){
+    case periodicReport:
+      if ((nextPeriodic < lastPeriodic) && (currentTime >= lastPeriodic)) {
         //does nothing
       }
-      else if (currentTime >= lastPeriodic){
+      else if (currentTime >= lastPeriodic) {
         sprintf(messageText, messages[eventNum], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
+        fona.sendSMS("7202449051", messageText);
         lastPeriodic = currentTime;
         nextPeriodic = currentTime + twentyfourHours;
       }
   }
-  fona.sendSMS("7202449051", messageText);
 }
