@@ -16,6 +16,8 @@
 
 void sendText(int eventNum);
 
+void sendError();
+
 //char* chooseMessage(int eventNum);
 
 #endif // _MESSAGE_SENDER_HPP_
