@@ -7,10 +7,10 @@
 //#include <SPI.h>
 //#include <SDCore.h>
 //#include "inc/SD.h"
-#include "Adafruit_FONA.h"
 
 uint32_t lastLog = 0;
 uint32_t nextLog = 0;
+int dayMillis;
 
 //SD.begin(PIN_SD_SS);
 //
@@ -74,7 +74,7 @@ uint32_t nextLog = 0;
 //}
 
 char* convertMillis(uint32_t mils){
- int dayMillis, hourMillis, minuteMillis, secondMillis;
+ int hourMillis, minuteMillis, secondMillis;
  char str[32];
  
  while (mils >= 86400000){
@@ -112,7 +112,6 @@ void logData(int temp) {
 
   else if (currentTime >= nextLog)
   {
-    DEBUG_PRINTLN(F("logging..."));
     myFile = SD.open("log1.txt", FILE_WRITE);
     myFile.println(str);
 	  myFile.close();
