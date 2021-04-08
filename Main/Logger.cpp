@@ -10,7 +10,7 @@
 
 uint32_t lastLog = 0;
 uint32_t nextLog = 0;
-int dayMillis;
+int dayMillis = 0;
 
 //SD.begin(PIN_SD_SS);
 //
