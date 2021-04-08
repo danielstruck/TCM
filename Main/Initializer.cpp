@@ -41,8 +41,8 @@ void blinkCurrentProfile() {
   }
 }
 void setupInitialProfile() {
+  DEBUG_PRINTLN(F("> init profile"));
   while (!resetBtnPressed()) {
-    DEBUG_PRINTLN(F("> init profile"));
     if (isProfileBtnRising()) {
       incrementProfile();
     }

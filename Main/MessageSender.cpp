@@ -86,30 +86,30 @@ void sendError(){
 void sendText(int eventNum) {
   uint32_t currentTime = millis();
   char* messageText;
+  bool shouldSend = true;
   DEBUG_PRINTLN(F("Send text function"));
 
   switch (eventNum) {
     case powerRestored:
       sprintf(messageText, messages[eventNum], getBatteryPercentage());
-      fona.sendSMS("7202449051", messageText);
       break;
     case profileSwitched:
       sprintf(messageText, messages[eventNum], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
-      fona.sendSMS("7202449051", messageText);
       break;
     case deviceReset:
       sprintf(messageText, messages[eventNum]);
-      fona.sendSMS("7202449051", messageText);
       break;
     case periodicReport:
       if ((nextPeriodic < lastPeriodic) && (currentTime >= lastPeriodic)) {
         //does nothing
+        shouldSend = false;
       }
       else if (currentTime >= lastPeriodic) {
         sprintf(messageText, messages[eventNum], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
-        fona.sendSMS("7202449051", messageText);
         lastPeriodic = currentTime;
         nextPeriodic = currentTime + twentyfourHours;
       }
   }
+  if (shouldSend)
+    fona.sendSMS("7202449051", messageText);
 }
