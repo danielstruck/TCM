@@ -5,10 +5,10 @@
 
 #define BUTTON_DEBOUNCE_THRESHHOLD (10)
 
-Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
-SoftwareSerial fonaSS = SoftwareSerial(FONA_RX, FONA_TX);
-SoftwareSerial *fonaSerial = &fonaSS;
-bool fonaOn = false;
+static Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
+static SoftwareSerial fonaSS = SoftwareSerial(FONA_RX, FONA_TX);
+static SoftwareSerial *fonaSerial = &fonaSS;
+static bool fonaOn = false;
 
 void debounceBtn(int pin, int& debounce) {
   if (digitalRead(pin) == LOW && debounce < BUTTON_DEBOUNCE_THRESHHOLD) {
@@ -53,28 +53,35 @@ uint16_t getBatteryPercentage() {
   return vPer;
 }
 
-void toggleFona() {
+void setFonaOn() {
   digitalWrite(PIN_FONA_KEY, LOW);
   DEBUG_PRINTLN(F("key -> low"));
   int previousPowerStatus = digitalRead(PIN_FONA_PS);
   delay(6000);
+  digitalWrite(PIN_FONA_KEY, HIGH);
   
   while (!isFonaPowered()) {
-    DEBUG_PRINTLN(F("Fona not powered"));
+    DEBUG_PRINTLN(F("Fona not turning on"));
     setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
   }
-  DEBUG_PRINTLN(F("Fona powered"));
-  fonaOn = !fonaOn;
-  
-  digitalWrite(PIN_FONA_KEY, HIGH);
+  setLEDs(0, 0, 0, 0, 0);
+  DEBUG_PRINTLN(F("Fona turned on"));
+  fonaOn = true;
+}
 
-//  char err[32];
-//  sprintf(err, "ps:%d>%d,on:%d", previousPowerStatus, isFonaOn(), fonaOn);
-//  DEBUG_PRINTLN(err);
-//  DEBUG_PRINT("ps:"); DEBUG_PRINT(previousPowerStatus);
-//  DEBUG_PRINT(">"); DEBUG_PRINT(isFonaOn());
-//  DEBUG_PRINT(",on:"); DEBUG_PRINT(fonaOn);
-//  DEBUG_PRINTLN("");
+void setFonaOff() {
+  digitalWrite(PIN_FONA_KEY, LOW);
+  DEBUG_PRINTLN(F("key -> low"));
+  int previousPowerStatus = digitalRead(PIN_FONA_PS);
+  delay(6000);
+  digitalWrite(PIN_FONA_KEY, HIGH);
+  
+  while (isFonaPowered()) {
+    DEBUG_PRINTLN(F("Fona is not turning off"));
+    setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
+  }
+  DEBUG_PRINTLN(F("Fona turned off"));
+  fonaOn = false;
 }
 
 bool isFonaOn() {

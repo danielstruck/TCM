@@ -7,18 +7,21 @@
 
 
 void blinkCurrentProfile() {
-  static uint32_t nextBlink = 0;
+  static uint32_t nextBlink = 0, lastBlink = 0;
   static bool state = 0;
-  
-  if (millis() >= nextBlink) {
-    state = !state;
-    nextBlink += 500;
-    if (nextBlink > time_Max) {
-      nextBlink -= time_Max;
-    }
-  }
 
-  if (state == 0) {
+  uint32_t ms = millis();
+  
+  if (ms >= nextBlink) {
+    state = !state;
+    lastBlink = nextBlink;
+    nextBlink += 500;
+  }
+  
+  if (lastBlink > nextBlink && ms > lastBlink) {
+    /* do nothing */
+  }
+  else if (state == 0) {
     setLEDs(0, 0, 0, 0, 0);
   }
   else {
@@ -41,8 +44,8 @@ void blinkCurrentProfile() {
   }
 }
 void setupInitialProfile() {
+  DEBUG_PRINTLN(F("> init profile"));
   while (!resetBtnPressed()) {
-    DEBUG_PRINTLN(F("> init profile"));
     if (isProfileBtnRising()) {
       incrementProfile();
     }
@@ -73,7 +76,7 @@ void setupInitialProfile() {
 void setupFona() {
   if (!isFonaPowered()) {
     DEBUG_PRINTLN(F("Turn Fona power on"));
-    toggleFona();
+    setFonaOn();
   }
   
   DEBUG_PRINTLN(F("Begin fona serial"));
