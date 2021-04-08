@@ -83,7 +83,7 @@ void loop() {
       sendText(powerRestored);
     }
     else if (lastPowerState && !isPowerOK()) {
-      if (toggleFona
+      setFonaOff();
     }
 
     lastPowerState = isPowerOK();

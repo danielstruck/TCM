@@ -41,7 +41,8 @@ bool isPowerOK();
 // returns -1 on failure, current battery percentage otherwise
 uint16_t getBatteryPercentage();
 
-void toggleFona();
+void setFonaOn();
+void setFonaOff();
 bool isFonaOn();
 
 bool isFonaPowered();
