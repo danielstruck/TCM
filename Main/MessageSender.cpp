@@ -39,7 +39,11 @@ void sendError() {
       messageText += "\n";
       messageText += messages[i];
     }
+--    if (!isFonaPowered)
+--      setFonaOn();
     fona.sendSMS("7202449051", messageText.c_str()); //send to => phone numbers
+    
+    setFonaOff();
     // fona.sendSMS("2246160041", messageText); //send to => phone numbers
     DEBUG_PRINTLN(F("Send Message"));
     lastSent = currentTime;
