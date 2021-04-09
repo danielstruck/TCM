@@ -1,3 +1,4 @@
+#include "Adafruit_FONA.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -74,12 +75,14 @@ int dayMillis = 0;
 //}
 
 char* convertMillis(uint32_t mils){
- int hourMillis, minuteMillis, secondMillis;
- char str[32];
+  int hourMillis, minuteMillis, secondMillis;
+  char str[32];
+
+//  Serial.print("mils: "); Serial.println(mils);
  
- while (mils >= 86400000){
-  mils /= 86400000;
-  dayMillis++;
+  while (mils >= 86400000){
+    mils /= 86400000;
+    dayMillis++;
   }
   while (mils >= 3600000){
     mils /= 3600000;
@@ -95,32 +98,43 @@ char* convertMillis(uint32_t mils){
   }
 
   sprintf(str, "%4d %2d %2d %2d", dayMillis, hourMillis, minuteMillis, secondMillis);
+//  Serial.println(secondMillis);
+//  Serial.println(minuteMillis);
+//  Serial.println(hourMillis);
+//  Serial.println(dayMillis);
+//  Serial.println(str);
   return str;
 }
 
 void logData(int temp) {
-
   uint32_t currentTime = millis();
-  char str[32];
-  File myFile;
+  char *str;
+  File f1, f2;
   convertMillis(currentTime);
   //sprintf(str, "%s &d", convertMillis(currentTime), temp); 
+//  DEBUG_PRINT("in logger "); DEBUG_PRINT(lastLog); DEBUG_PRINT(" "); DEBUG_PRINT(nextLog); DEBUG_PRINT(" "); DEBUG_PRINTLN(currentTime);
 
   if ((nextLog < lastLog) && (currentTime >= lastLog)){
     //does nothing
-    }
-
+  }
   else if (currentTime >= nextLog)
   {
-    myFile = SD.open("log1.txt", FILE_WRITE);
-    myFile.print(convertMillis(currentTime));
-    myFile.println(temp);
-	  myFile.close();
+    DEBUG_PRINTLN("LOG");
+    str = convertMillis(currentTime);
+//    DEBUG_PRINTLN(str);
+    f1 = SD.open("log1.txt", FILE_WRITE);
+    f1.print(str);
+//    Serial.println("@1");
+    f1.println(temp);
+//    Serial.println("@2");
+	  f1.close();
 
-    myFile = SD.open("log2.txt", FILE_WRITE);
-    myFile.print(convertMillis(currentTime));
-    myFile.println(temp);
-    myFile.close();
+    f2 = SD.open("log2.txt", FILE_WRITE);
+    f2.print(str);
+//    Serial.println("@3");
+    f2.println(temp);
+//    Serial.println("@4");
+    f2.close();
 
     lastLog = currentTime;
     nextLog = lastLog + fifteenSec;

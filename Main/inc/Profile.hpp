@@ -3,12 +3,12 @@
 
 class Boundry {
   public: 
-	int upper, lower;
+	char upper, lower;
 };
 
 extern Boundry profile[];
 
-extern int currentProfile;
+extern char16_t currentProfile;
 
 
 Boundry defineBoundry(int upper, int lower);

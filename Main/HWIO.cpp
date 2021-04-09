@@ -10,7 +10,7 @@ static SoftwareSerial fonaSS = SoftwareSerial(FONA_RX, FONA_TX);
 static SoftwareSerial *fonaSerial = &fonaSS;
 static bool fonaOn = false;
 
-void debounceBtn(int pin, int& debounce) {
+void debounceBtn(int pin, uint8_t &debounce) {
   if (digitalRead(pin) == LOW && debounce < BUTTON_DEBOUNCE_THRESHHOLD) {
     ++debounce;
   }
@@ -21,7 +21,7 @@ void debounceBtn(int pin, int& debounce) {
 
 // returns true if the profile button is pressed 
 bool profileBtnPressed() {
-  static int debounce = 0;
+  static uint8_t debounce = 0;
   
   debounceBtn(PIN_BTN_SELECT, debounce);
   
@@ -30,7 +30,7 @@ bool profileBtnPressed() {
 
 // returns true if the reset button is pressed
 bool resetBtnPressed() {
-  static int debounce = 0;
+  static uint8_t debounce = 0;
   
   debounceBtn(PIN_BTN_RST, debounce);
   
@@ -48,8 +48,6 @@ uint16_t getBatteryPercentage() {
   if (!fona.getBattPercent(&vPer)) {
     vPer = -1;
   }
-//  char str[32]; sprintf(str, "battery = %d", vPer);
-//  DEBUG_PRINT(F("battery = ")); DEBUG_PRINTLN(vPer)
   return vPer;
 }
 
@@ -89,7 +87,6 @@ bool isFonaOn() {
 }
 
 bool isFonaPowered() {
-//  DEBUG_PRINT("PS: "); DEBUG_PRINT(digitalRead(PIN_FONA_PS)); DEBUG_PRINT(" == ");DEBUG_PRINTLN(HIGH);
   return digitalRead(PIN_FONA_PS) == HIGH;
 }
 

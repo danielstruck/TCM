@@ -7,21 +7,20 @@
 
 
 void blinkCurrentProfile() {
-  static uint32_t nextBlink = 0, lastBlink = 0;
+  static uint32_t lastBlink = 0;
   static bool state = 0;
 
   uint32_t ms = millis();
   
-  if (ms >= nextBlink) {
-    state = !state;
-    lastBlink = nextBlink;
-    nextBlink += 500;
-  }
-  
-  if (lastBlink > nextBlink && ms > lastBlink) {
+  if (lastBlink > lastBlink+500 && ms > lastBlink) {
     /* do nothing */
   }
-  else if (state == 0) {
+  else if (ms >= lastBlink+500) {
+    state = !state;
+    lastBlink += 500;
+  }
+  
+  if (state == 0) {
     setLEDs(0, 0, 0, 0, 0);
   }
   else {
@@ -97,15 +96,15 @@ void setupFona() {
 //  if (!fona.enableRTC(1))
 //    DEBUG_PRINTLN(F("Failed to enable RTC"));
 
-  DEBUG_PRINTLN(F("Enable network time sync"));
-  for (int tries = 5; tries > 0 && !fona.enableNetworkTimeSync(1); tries--)
-    DEBUG_PRINTLN(F("Failed to enable network time sync"));
+//  DEBUG_PRINTLN(F("Enable network time sync"));
+//  for (int tries = 5; tries > 0 && !fona.enableNetworkTimeSync(1); tries--)
+//    DEBUG_PRINTLN(F("Failed to enable network time sync"));
 
   DEBUG_PRINTLN(F("fona setup complete"));
 }
 
 void setupLogger(){
-//  SD.begin();
+  SD.begin(PIN_SD_SS);
 }
 
 void setupPins() {
@@ -125,6 +124,8 @@ void setupPins() {
   pinMode(PIN_BTN_SELECT, INPUT_PULLUP); // internal pullup - https://www.arduino.cc/en/Tutorial/Foundations/DigitalPins
   pinMode(PIN_BTN_RST, INPUT_PULLUP);
   pinMode(PIN_FONA_PS, INPUT);
+
+  
 
 //  digitalWrite(PIN_FONA_KEY, LOW);
 }

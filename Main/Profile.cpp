@@ -8,7 +8,7 @@ Boundry profile[] = {
   defineBoundry(10, 32)
 };
 
-int currentProfile = 0;
+char16_t currentProfile = 0;
 
 Boundry defineBoundry(int lower, int upper) {
   Boundry b;
