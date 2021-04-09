@@ -12,17 +12,17 @@ uint32_t nextPeriodic = 0;
 
 // make message for when profile is changed
 const char *messages[] = {
-  "WARNING: Temperature out of range: (rangeMin - rangeMax) Current Temp: %d",
-  "WARNING: Power outage. Current Battery %%: %d",
-//  "",
-//  "",
-//  "",
-//  "",
-  "WARNING: Thermister not detected.",
-  "Periodic Report: Range is %d to %d. Current Temperature is %d",
-  "POWER RESTORED: Current Battery %% is %d",
-  "Device reset button pressed. Restarting operations",
-  "Profile Switched: Range is %d to %d. Current Temperature is %d"
+  "Temperature out of range %d to %d, current: %d",
+  "POWER OUTAGE battery = %d %%",
+  "",
+  "",
+  "",
+  "",
+  "Thermister not detected",
+  "PERIODIC REPORT range %d to %d, Current: %d",
+  "POWER RESTORED battery: %d %%",
+  "RESET PRESSED restarting operations",
+  "PROFILE SWITCHED range %d to %d, current: %d"
 };
 
 char* chooseMessage(int eventNum) {
