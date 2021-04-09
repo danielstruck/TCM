@@ -104,7 +104,7 @@ void logData(int temp) {
   char str[32];
   File myFile;
   convertMillis(currentTime);
-  sprintf(str, "%s &d", convertMillis(currentTime), temp); 
+  //sprintf(str, "%s &d", convertMillis(currentTime), temp); 
 
   if ((nextLog < lastLog) && (currentTime >= lastLog)){
     //does nothing
@@ -113,11 +113,13 @@ void logData(int temp) {
   else if (currentTime >= nextLog)
   {
     myFile = SD.open("log1.txt", FILE_WRITE);
-    myFile.println(str);
+    myFile.print(convertMillis(currentTime));
+    myFile.println(temp);
 	  myFile.close();
 
     myFile = SD.open("log2.txt", FILE_WRITE);
-    myFile.println(str);
+    myFile.print(convertMillis(currentTime));
+    myFile.println(temp);
     myFile.close();
 
     lastLog = currentTime;
