@@ -63,13 +63,14 @@ void loop() {
   if (!isTemperatureInsideBoundries() || (errorFlag & bit(badTemp))) {
     DEBUG_PRINTLN(F("> Bad temperature detected"));
     setErrorFlag(badTemp);
+    sendError();
   }
   
   logData(temperatureChamber);
       
   if (!isPowerOK() || (errorFlag & bit(badPower))) {
-//    DEBUG_PRINT(F("> Power outage detected ")); /*DEBUG_PRINTLN(analogRead(PIN_POWER_INDICATOR));*/ DEBUG_PRINT(lastPowerState); DEBUG_PRINT(F(" ")); DEBUG_PRINT(isPowerOK()); 
     setErrorFlag(badPower);
+    sendError();
     
     if (!lastPowerState && isPowerOK()) {
       sendText(powerRestored);
@@ -79,9 +80,6 @@ void loop() {
       setFonaOff();
       DEBUG_PRINTLN(F("POWER FALL"));
     }
-    
-    
-    DEBUG_PRINT(lastPowerState); DEBUG_PRINT(F(" ")); DEBUG_PRINTLN(isPowerOK());
   }
   lastPowerState = isPowerOK();
   
@@ -126,7 +124,5 @@ void loop() {
   // display any error codes on the error LED
   blinkLED();
 
-  // send error SMS messages
-  sendError();
-
+  sendMessageToNextRecipient();
 }

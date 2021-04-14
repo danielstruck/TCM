@@ -18,6 +18,8 @@ void sendText(int eventNum);
 
 void sendError();
 
+void sendMessageToNextRecipient();
+
 //char* chooseMessage(int eventNum);
 
 #endif // _MESSAGE_SENDER_HPP_

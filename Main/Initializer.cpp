@@ -107,6 +107,14 @@ void setupLogger(){
   SD.begin(PIN_SD_SS);
   SD.open("log1.txt", FILE_WRITE).close();
   SD.open("log2.txt", FILE_WRITE).close();
+
+  char *delimeter = "new log";
+  File f1 = SD.open("log1.txt", FILE_WRITE);
+  f1.println(delimeter);
+  f1.close();
+  File f2 = SD.open("log2.txt", FILE_WRITE);
+  f2.println(delimeter);
+  f2.close();
 }
 
 void setupPins() {
