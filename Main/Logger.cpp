@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "inc/Logger.hpp"
 #include "inc/MessageSender.hpp"
+#include "inc/HWIO.hpp"
 #include <SD.h>
 //#include <SPI.h>
 //#include <SDCore.h>
@@ -108,10 +109,9 @@ char* convertMillis(uint32_t mils){
 
 void logData(int temp) {
   uint32_t currentTime = millis();
-  char *str;
+//  char *str;
+  int bat;
   File f1, f2;
-  convertMillis(currentTime);
-  //sprintf(str, "%s &d", convertMillis(currentTime), temp); 
 //  DEBUG_PRINT("in logger "); DEBUG_PRINT(lastLog); DEBUG_PRINT(" "); DEBUG_PRINT(nextLog); DEBUG_PRINT(" "); DEBUG_PRINTLN(currentTime);
 
   if ((nextLog < lastLog) && (currentTime >= lastLog)){
@@ -120,19 +120,25 @@ void logData(int temp) {
   else if (currentTime >= nextLog)
   {
     DEBUG_PRINTLN("LOG");
-    str = convertMillis(currentTime);
-//    DEBUG_PRINTLN(str);
+//    str = convertMillis(currentTime);
+    bat = getBatteryPercentage();
     f1 = SD.open("log1.txt", FILE_WRITE);
-    f1.print(str);
+//    DEBUG_PRINT(f1); DEBUG_PRINT(" "); DEBUG_PRINT(f1.available()); DEBUG_PRINT(" "); DEBUG_PRINTLN(f1.availableForWrite());
+//    f1.print(str);
+    f1.print(currentTime); f1.print(" ");
 //    Serial.println("@1");
-    f1.println(temp);
+    f1.print(temp); f1.print(" ");
+    f1.println(bat);
 //    Serial.println("@2");
 	  f1.close();
 
     f2 = SD.open("log2.txt", FILE_WRITE);
-    f2.print(str);
+//    DEBUG_PRINT(f2); DEBUG_PRINT(" "); DEBUG_PRINT(f2.available()); DEBUG_PRINT(" "); DEBUG_PRINTLN(f2.availableForWrite());
+//    f2.print(str);
+    f2.print(currentTime); f2.print(" ");
 //    Serial.println("@3");
-    f2.println(temp);
+    f2.print(temp); f2.print(" ");
+    f2.println(bat);
 //    Serial.println("@4");
     f2.close();
 

@@ -6,8 +6,8 @@
 
 #define FONA_TX (2)
 #define FONA_RX (3)
-#define PIN_POWER_INDICATOR (18) // used to detect power outages
-#define PIN_LED_ERROR  (0) // error LED
+#define PIN_POWER_INDICATOR (18) // A4; used to detect power outages
+#define PIN_LED_ERROR  (19) // A5; error LED
 #define PIN_LED4       (4) // LED for profile 4
 #define PIN_LED3       (5) // LED for profile 3
 #define PIN_LED2       (6) // LED for profile 2
@@ -18,10 +18,10 @@
 #define PIN_SD_MOSI    (11) // MOSI for SD breakout
 #define PIN_SD_MISO    (12) // MISO for SD breakout
 #define PIN_SD_CLK     (13) // clock for SD breakout
-#define PIN_THERM_IN   (14) // thermistor input 
-#define PIN_BTN_SELECT (15) // profile selector button input 
-#define PIN_BTN_RST    (16) // reset button input 
-#define PIN_FONA_PS    (17) // power status pin on Fona
+#define PIN_THERM_IN   (14) // A0; thermistor input 
+#define PIN_BTN_SELECT (15) // A1; profile selector button input 
+#define PIN_BTN_RST    (16) // A2; reset button input 
+#define PIN_FONA_PS    (17) // A3; power status pin on Fona
 
 
 extern Adafruit_FONA_3G fona;

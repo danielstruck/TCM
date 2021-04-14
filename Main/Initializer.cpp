@@ -105,6 +105,8 @@ void setupFona() {
 
 void setupLogger(){
   SD.begin(PIN_SD_SS);
+  SD.open("log1.txt", FILE_WRITE).close();
+  SD.open("log2.txt", FILE_WRITE).close();
 }
 
 void setupPins() {

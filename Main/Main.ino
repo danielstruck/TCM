@@ -6,29 +6,41 @@
 #include "inc/MessageSender.hpp"
 #include "inc/Profile.hpp"
 #include "inc/TemperatureDetection.hpp"
-
+#include <SD.h>
 
 void setup() {
   // initialize pins
   setupPins();
-      
+  setLEDs(1, 1, 1, 1, 1); // show user that the program is in setup
+  
   // initialize serial stream
-  setLEDs(1, 1, 1, 1, 1);
   while(!Serial);
   Serial.begin(115200);
-  setLEDs(0, 0, 0, 0, 0);
 
   // enable and start up Fona 3G
   setupFona();
 
   // setup logger and SD card bus
   setupLogger();
+  setLEDs(0, 0, 0, 0, 0); // show user that the program is no longer in setup
 
   // ask user to input initial profile parameters
   setupInitialProfile();
   
   DEBUG_PRINTLN(F("Setup complete"));
 
+//  int i = 0;
+//  long start = millis();
+//  File f1;
+//  SD.open("tester.txt", FILE_WRITE).close();
+//  while (1) {
+//    f1 = SD.open("tester.txt", FILE_WRITE);
+//    f1.print("12345678901234567890"); f1.print(" ");
+//    f1.print("12345678901234567890"); f1.print(" ");
+//    f1.println("12345678901234567890");
+//    f1.close();
+//    DEBUG_PRINT(++i); DEBUG_PRINT(" "); DEBUG_PRINTLN(millis() - start); 
+//  }
 }
 
 void printState() {
@@ -42,6 +54,8 @@ void printState() {
 //  DEBUG_PRINTLN(F(""));
 }
 void loop() {
+  static bool lastPowerState = false;
+  
   printState();
   
   // check termal range
@@ -54,19 +68,22 @@ void loop() {
   logData(temperatureChamber);
       
   if (!isPowerOK() || (errorFlag & bit(badPower))) {
-    bool lastPowerState = false;
-    DEBUG_PRINT(F("> Power outage detected ")); DEBUG_PRINTLN(analogRead(PIN_POWER_INDICATOR));
+//    DEBUG_PRINT(F("> Power outage detected ")); /*DEBUG_PRINTLN(analogRead(PIN_POWER_INDICATOR));*/ DEBUG_PRINT(lastPowerState); DEBUG_PRINT(F(" ")); DEBUG_PRINT(isPowerOK()); 
     setErrorFlag(badPower);
     
     if (!lastPowerState && isPowerOK()) {
       sendText(powerRestored);
+      DEBUG_PRINTLN(F("Power Restored"));
     }
-    else if (lastPowerState && !isPowerOK()) {
+    if (lastPowerState && !isPowerOK()) {
       setFonaOff();
+      DEBUG_PRINTLN(F("POWER FALL"));
     }
-
-    lastPowerState = isPowerOK();
+    
+    
+    DEBUG_PRINT(lastPowerState); DEBUG_PRINT(F(" ")); DEBUG_PRINTLN(isPowerOK());
   }
+  lastPowerState = isPowerOK();
   
   if (resetBtnPressed() && errorFlag != 0) {
     DEBUG_PRINTLN(F("> Reset ON"));
@@ -111,4 +128,5 @@ void loop() {
 
   // send error SMS messages
   sendError();
+
 }

@@ -1,4 +1,5 @@
 #include "inc/HWIO.hpp"
+#include "inc/Errors.h"
 #include "Adafruit_FONA.h"
 #include <SoftwareSerial.h>
 
@@ -52,15 +53,23 @@ uint16_t getBatteryPercentage() {
 }
 
 void setFonaOn() {
-  digitalWrite(PIN_FONA_KEY, LOW);
-  DEBUG_PRINTLN(F("key -> low"));
-  int previousPowerStatus = digitalRead(PIN_FONA_PS);
-  delay(6000);
-  digitalWrite(PIN_FONA_KEY, HIGH);
+  if (fonaOn) return;
   
-  while (!isFonaPowered()) {
-    DEBUG_PRINTLN(F("Fona not turning on"));
-    setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
+  for (int i = 0; i < 5; i++) {
+    digitalWrite(PIN_FONA_KEY, LOW);
+    DEBUG_PRINTLN(F("key -> low"));
+    int previousPowerStatus = digitalRead(PIN_FONA_PS);
+    delay(1000);
+    digitalWrite(PIN_FONA_KEY, HIGH);
+
+    if (!isFonaPowered()) {
+      DEBUG_PRINTLN(F("Fona not turning on"));
+      errorFlag |= badSMS;
+      blinkLED();// setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
+    }
+    else {
+      break;
+    }
   }
   setLEDs(0, 0, 0, 0, 0);
   DEBUG_PRINTLN(F("Fona turned on"));
@@ -68,16 +77,25 @@ void setFonaOn() {
 }
 
 void setFonaOff() {
-  digitalWrite(PIN_FONA_KEY, LOW);
-  DEBUG_PRINTLN(F("key -> low"));
-  int previousPowerStatus = digitalRead(PIN_FONA_PS);
-  delay(6000);
-  digitalWrite(PIN_FONA_KEY, HIGH);
+  if (!fonaOn) return;
   
-  while (isFonaPowered()) {
-    DEBUG_PRINTLN(F("Fona is not turning off"));
-    setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
+  for (int i = 0; i < 5; i++) {
+    digitalWrite(PIN_FONA_KEY, LOW);
+    DEBUG_PRINTLN(F("key -> low"));
+    int previousPowerStatus = digitalRead(PIN_FONA_PS);
+    delay(1000);
+    digitalWrite(PIN_FONA_KEY, HIGH);
+
+    if (isFonaPowered()) {
+      DEBUG_PRINTLN(F("Fona not turning off"));
+      errorFlag |= badSMS;
+      blinkLED();// setLEDs(1, 1, 1, 1, 0); // TODO replace w/ error LED blink code "cannot start fona"
+    }
+    else {
+      break;
+    }
   }
+  
   DEBUG_PRINTLN(F("Fona turned off"));
   fonaOn = false;
 }
