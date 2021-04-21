@@ -26,31 +26,15 @@ const char *messages[] = {
   "S",//"PROF SW"// range %d to %d current %d"
 };
 
-const char *msg_range() {
-  char *msg;
-  sprintf(msg, " range %d,%d", profile[currentProfile].lower, profile[currentProfile].upper);
-  return msg;
-}
-const char *msg_current() {
-  char *msg;
-  sprintf(msg, " current %dC", temperatureChamber);
-  return msg;
-}
-const char *msg_battery() {
-  char *msg;
-  sprintf(msg, " battery %d%%", getBatteryPercentage());
-  return msg;
-}
-
 char *recipients[5] = {
   "7202449051",
   "2246160041",
-  "",
-  "",
+  "7138780209",
+  "9283505990",
   ""
 };
-int registeredRecipients = 2;
-uint8_t nextSMSRecipient = -1;
+int registeredRecipients = 4;
+int8_t nextSMSRecipient = -1;
 String messageText;
 // returns false if array is full, true if number was added
 int registerNewRecipient(char *phoneNumber) {
@@ -62,35 +46,37 @@ int registerNewRecipient(char *phoneNumber) {
 }
 void sendMessageToNextRecipient() {
   if (nextSMSRecipient >= 0) {
-    DEBUG_PRINT(F("Send Message: ")); DEBUG_PRINTLN(messageText.c_str());
+    DEBUG_PRINT(F(" send message ")); DEBUG_PRINTLN(messageText.c_str()); 
     
     if (!isFonaPowered()) setFonaOn();
-    while (!fona.sendSMS(recipients[nextSMSRecipient], messageText.c_str()))
+    for (int i = 0; i < 10 && !fona.sendSMS(recipients[nextSMSRecipient], messageText.c_str()); ++i) {
       /* wait for previous SMS to finish sending */
-    if (isFonaPowered()) setFonaOff();
+      delay(10);
+    }
       
     nextSMSRecipient--;
   }
+  else if (errorFlag && isFonaPowered()) {
+    setFonaOff();
+  }
 }
-void sendError() {
-//  DEBUG_PRINTLN(F("sendError")); 
+void startSendingSMS() {
+  nextSMSRecipient = registeredRecipients-1;
+}
+void sendError() { 
+//  DEBUG_PRINT(F("sendError: ")); DEBUG_PRINTLN(errorFlag);
   uint32_t currentTime = millis();
-//  static String messageText = "WARNING ";
-//  char *msg;
-
-//  messageText += convertMillis(currentTime);
 
   bool nextSendHasOverflowed = lastSent + fifteenMinutes < lastSent;
   bool currentTimeHasOverflowed = currentTime < lastSent;
   bool shouldSendSMS = lastSent == 0 || (currentTime >= lastSent + fifteenMinutes);
-  
+  DEBUG_PRINT(F("SMS countdown: ")); DEBUG_PRINTLN(lastSent + fifteenMinutes - currentTime);
   if (nextSendHasOverflowed && !currentTimeHasOverflowed) {
     /* wait for current time to overflow as well */
   }
   else if (shouldSendSMS) {
     messageText = currentTime;
-    messageText += "WARNING: ";
-    messageText += ' ';
+    messageText += " WARNING: ";
     
     for (int i = 0; i < 7; i++) {
       if (errorFlag & bit(i)) {
@@ -99,9 +85,9 @@ void sendError() {
         if (i == 0 || i == 7 || i ==10) {
           DEBUG_PRINTLN(F("append range")); 
           messageText += " prof ";
-          messageText += profile[currentProfile].lower;
+          messageText += (int) profile[currentProfile].lower;
           messageText += ',';
-          messageText += profile[currentProfile].upper;
+          messageText += (int) profile[currentProfile].upper;
         }
         if (i == 0 || i == 7 || i == 10) {
           DEBUG_PRINTLN(F("append temp"));
@@ -116,53 +102,56 @@ void sendError() {
       }
     }
     
-    nextSMSRecipient = registeredRecipients-1;
-    lastSent = currentTime + fifteenMinutes;
+    lastSent = currentTime;
+    startSendingSMS();
   }
 }
 
 void sendText(int eventNum) {
+//  DEBUG_PRINT(F("sendText: ")); DEBUG_PRINTLN(eventNum);
   uint32_t currentTime = millis();
-//  static char* messageText;
-//  DEBUG_PRINTLN(F("Send text function"));
 
-  messageText = messages[eventNum];
-
-  switch (eventNum) {
-    case powerRestored:
-//      sprintf(messageText, messages[eventNum], getBatteryPercentage());
-        messageText += ' ';
-        messageText += getBatteryPercentage();
-      break;
-    case profileSwitched:
-//      sprintf(messageText, messages[eventNum], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
-        messageText += ' ';
-        messageText += profile[currentProfile].lower;
-        messageText += ' ';
-        messageText += profile[currentProfile].upper;
-        messageText += ' ';
-        messageText += temperatureChamber;
-      break;
-    case deviceReset:
-//      sprintf(messageText, messages[eventNum]);
-      break;
-    case periodicReport:
-      if ((lastPeriodic + twentyfourHours < lastPeriodic) && (currentTime >= lastPeriodic)) {
-        //does nothing
-      }
-      else if (currentTime >= lastPeriodic) {
-//        sprintf(messageText, messages[eventNum], profile[currentProfile].lower, profile[currentProfile].upper, temperatureChamber);
-//        lastPeriodic = currentTime;
-//        nextPeriodic = currentTime + twentyfourHours;
-        messageText += ' ';
-        messageText += profile[currentProfile].lower;
-        messageText += ' ';
-        messageText += profile[currentProfile].upper;
-        messageText += ' ';
-        messageText += temperatureChamber;
-        lastPeriodic = currentTime + twentyfourHours;
-      }
+  if (eventNum == periodicReport) {
+    if ((lastPeriodic + twentyfourHours < lastPeriodic) && (currentTime >= lastPeriodic)) {
+      //does nothing
+    }
+    else if (currentTime >= lastPeriodic) {
+      messageText = messages[eventNum];
+      messageText += ' ';
+      messageText += (int) profile[currentProfile].lower;
+      messageText += ' ';
+      messageText += (int) profile[currentProfile].upper;
+      messageText += ' ';
+      messageText += temperatureChamber;
+      lastPeriodic = currentTime + twentyfourHours;
+      
+      startSendingSMS();
+    }
   }
+  else {
+    messageText = messages[eventNum];
+    
+    switch (eventNum) {
+      case powerRestored:
+          messageText += ' ';
+          messageText += getBatteryPercentage();
+        break;
+      case profileSwitched:
+          messageText += ' ';
+          messageText += (int) profile[currentProfile].lower;
+          messageText += ',';
+          messageText += (int) profile[currentProfile].upper;
+          messageText += '|';
+          messageText += temperatureChamber;
+        break;
+      case deviceReset:
+        break;
+    }
+  
+    startSendingSMS();
+  }
+}
 
-  nextSMSRecipient = registeredRecipients-1;
+void sms_resetError() {
+  lastSent = 0;
 }

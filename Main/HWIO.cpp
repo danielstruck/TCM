@@ -9,7 +9,7 @@
 static Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
 static SoftwareSerial fonaSS = SoftwareSerial(FONA_RX, FONA_TX);
 static SoftwareSerial *fonaSerial = &fonaSS;
-static bool fonaOn = false;
+static bool fonaOn = false; // deprecated
 
 void debounceBtn(int pin, uint8_t &debounce) {
   if (digitalRead(pin) == LOW && debounce < BUTTON_DEBOUNCE_THRESHHOLD) {
@@ -53,14 +53,14 @@ uint16_t getBatteryPercentage() {
 }
 
 void setFonaOn() {
-  if (fonaOn) return;
+  if (isFonaPowered()) return;
   
   for (int i = 0; i < 5; i++) {
     digitalWrite(PIN_FONA_KEY, LOW);
     DEBUG_PRINTLN(F("key -> low"));
-    int previousPowerStatus = digitalRead(PIN_FONA_PS);
-    delay(1000);
+    delay(5000);
     digitalWrite(PIN_FONA_KEY, HIGH);
+    delay(2000);
 
     if (!isFonaPowered()) {
       DEBUG_PRINTLN(F("Fona not turning on"));
@@ -71,20 +71,20 @@ void setFonaOn() {
       break;
     }
   }
-  setLEDs(0, 0, 0, 0, 0);
+  
   DEBUG_PRINTLN(F("Fona turned on"));
   fonaOn = true;
 }
 
 void setFonaOff() {
-  if (!fonaOn) return;
+  if (!isFonaPowered()) return;
   
   for (int i = 0; i < 5; i++) {
     digitalWrite(PIN_FONA_KEY, LOW);
     DEBUG_PRINTLN(F("key -> low"));
-    int previousPowerStatus = digitalRead(PIN_FONA_PS);
-    delay(1000);
+    delay(5000);
     digitalWrite(PIN_FONA_KEY, HIGH);
+    delay(2000);
 
     if (isFonaPowered()) {
       DEBUG_PRINTLN(F("Fona not turning off"));
@@ -100,6 +100,7 @@ void setFonaOff() {
   fonaOn = false;
 }
 
+// deprecated
 bool isFonaOn() {
   return fonaOn;
 }
