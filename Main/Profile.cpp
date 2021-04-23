@@ -1,22 +1,18 @@
 #include "inc/Profile.hpp"
 
 
+// Default profiles, can be expanded to include more profiles
 Boundry profile[] = {
-  defineBoundry(-54,72),
-  defineBoundry(-40, 72),
-  defineBoundry(-10, 56),
-  defineBoundry(10, 32)
+  Boundry(-54,72),
+  Boundry(-40, 72),
+  Boundry(-10, 56),
+  Boundry(10, 32)
 };
 
+// keeps track of the current profile
 char16_t currentProfile = 0;
 
-Boundry defineBoundry(int lower, int upper) {
-  Boundry b;
-  b.upper = upper;
-  b.lower = lower;
-  return b;
-}
-
+// Increments and wraps the current profile
 void incrementProfile() {
   currentProfile = (++currentProfile) % (sizeof(profile) / sizeof(Boundry));
 }

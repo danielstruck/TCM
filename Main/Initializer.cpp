@@ -134,8 +134,4 @@ void setupPins() {
   pinMode(PIN_BTN_SELECT, INPUT_PULLUP); // internal pullup - https://www.arduino.cc/en/Tutorial/Foundations/DigitalPins
   pinMode(PIN_BTN_RST, INPUT_PULLUP);
   pinMode(PIN_FONA_PS, INPUT);
-
-  
-
-//  digitalWrite(PIN_FONA_KEY, LOW);
 }

@@ -1,7 +1,6 @@
 #ifndef _TEMPERATURE_HPP_
 #define _TEMPERATURE_HPP_
 
-// extern struct constants;
 
 extern int temperatureChamber;
 extern bool temperatureInsideBoundries;

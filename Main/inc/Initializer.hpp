@@ -3,11 +3,8 @@
 
 
 void setupInitialProfile();
-
 void setupFona();
-
 void setupLogger();
-
 void setupPins();
 
 #endif // _INITIALIZER_HPP_

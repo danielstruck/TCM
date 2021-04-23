@@ -4,13 +4,20 @@
 #include <SoftwareSerial.h>
 
 
+// Debounce constant for number of itterations that the button needs to be held down before being registed as a debounced button press
 #define BUTTON_DEBOUNCE_THRESHHOLD (10)
 
+// Global data for the fona
 static Adafruit_FONA_3G fona = Adafruit_FONA_3G(PIN_FONA_RST);
 static SoftwareSerial fonaSS = SoftwareSerial(FONA_RX, FONA_TX);
 static SoftwareSerial *fonaSerial = &fonaSS;
-static bool fonaOn = false; // deprecated
+// Keeps track of whether the Fona is on or off
+//  DEPRICATED - superceded by reading power state pin (PS) from Fona
+static bool fonaOn = false;
 
+// Debounce algorithm for a button that increments {debounce} when the button is pressed
+//  and decrements it when the button is not pressed. {debounce} should be compated to
+//  BUTTON_DEBOUNCE_THRESHHOLD to determine whether the button has finished with its debounce
 void debounceBtn(int pin, uint8_t &debounce) {
   if (digitalRead(pin) == LOW && debounce < BUTTON_DEBOUNCE_THRESHHOLD) {
     ++debounce;
@@ -38,7 +45,7 @@ bool resetBtnPressed() {
   return debounce == BUTTON_DEBOUNCE_THRESHHOLD;
 }
 
-// returns true if the arduino is recieving power from the Fona
+// returns true if the arduino is recieving power from commercial power
 bool isPowerOK() {
   return digitalRead(PIN_POWER_INDICATOR) == HIGH;
 }
@@ -46,12 +53,18 @@ bool isPowerOK() {
 // returns -1 on failure, current battery percentage otherwise
 uint16_t getBatteryPercentage() {
   uint16_t vPer;
+  
+  setFonaOn();
   if (!fona.getBattPercent(&vPer)) {
     vPer = -1;
   }
+  setFonaOff();
+  
   return vPer;
 }
 
+// attempts to turn the Fona on up to 5 times
+// NOTE: this may take a long time to complete
 void setFonaOn() {
   if (isFonaPowered()) return;
   
@@ -76,6 +89,8 @@ void setFonaOn() {
   fonaOn = true;
 }
 
+// attempts to turn the Fona off up to 5 times
+// NOTE: this may take a long time to complete
 void setFonaOff() {
   if (!isFonaPowered()) return;
   
@@ -105,6 +120,7 @@ bool isFonaOn() {
   return fonaOn;
 }
 
+// returns true if the Fona is on, false otherwise
 bool isFonaPowered() {
   return digitalRead(PIN_FONA_PS) == HIGH;
 }
@@ -162,6 +178,7 @@ void setLEDs(int errorLED, int prof1, int prof2, int prof3, int prof4) {
   else if (prof4 == 0) setProfile4LEDOff();
 }
 
+// detects a rising edge in a high/low system using the current state and previous state
 bool detectRisingEdge(bool lastBtnState, bool currentBtnState) {
   return lastBtnState == LOW && currentBtnState == HIGH;
 }

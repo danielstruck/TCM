@@ -10,7 +10,7 @@
 
 void setup() {
   // initialize pins
-  setupPins();
+  setupPins(); // must go before Fona and Logger setups or the pins will not be set up correctly
   setLEDs(1, 1, 1, 1, 1); // show user that the program is in setup
   
   // initialize serial stream
@@ -30,6 +30,7 @@ void setup() {
   DEBUG_PRINTLN(F("Setup complete"));
 }
 
+// prints out the state of the system to Serial using Arduino's FlashStrings
 void printState() {
   DEBUG_PRINT(F("err=")); DEBUG_PRINT(errorFlag);
   DEBUG_PRINT(F("\tprof=")); DEBUG_PRINT(currentProfile);
@@ -37,48 +38,56 @@ void printState() {
   DEBUG_PRINT(F("\tbound=")); DEBUG_PRINT((int) profile[currentProfile].lower); DEBUG_PRINT(F(","));DEBUG_PRINT((int) profile[currentProfile].upper);
   DEBUG_PRINT(F("\tpwrOk=")); DEBUG_PRINT(isPowerOK());
   DEBUG_PRINT(F("\trst=")); DEBUG_PRINT(resetBtnPressed());
-//  DEBUG_PRINT(F("\tfona=")); DEBUG_PRINT(isFonaOn()? 1: 0);
   DEBUG_PRINTLN(F(""));
 }
+
 void loop() {
-  static bool lastPowerState = true;
-  
+  static bool lastPowerState = true; // used to track last power state for power outage and power restored events
+
+  // prints out the state of the system to Serial
   printState();
   
   // check termal range
   temp_sense();
+
   if (!isTemperatureInsideBoundries() || (errorFlag & bit(badTemp))) {
     DEBUG_PRINTLN(F("> Bad temperature detected"));
     setErrorFlag(badTemp);
     sendError();
   }
-  
+
+  // record temperature data on the microSD card
   logData(temperatureChamber);
       
   if (!isPowerOK() || (errorFlag & bit(badPower))) {
     setErrorFlag(badPower);
     sendError();
-    
+
+    // On a rising edge of power, send a power restored notification and turn the Fona back on
     if (!lastPowerState && isPowerOK()) {
+      DEBUG_PRINTLN(F("Power Restored"));
       sendText(powerRestored);
       setFonaOn();
-      DEBUG_PRINTLN(F("Power Restored"));
     }
+
+    // On a falling edge of power, turn off the Fona
     if (lastPowerState && !isPowerOK()) {
-      setFonaOff();
       DEBUG_PRINTLN(F("POWER FALL"));
+      setFonaOff();
     }
   }
+  // update the last power state
   lastPowerState = isPowerOK();
-  
+
+  // reset errors if the reset button is pressed and errors exist
   if (resetBtnPressed() && errorFlag != 0) {
     DEBUG_PRINTLN(F("> Reset ON"));
     sendText(deviceReset);
-    sms_resetError();
-    errorFlag = 0;
+    sms_resetError(); // resets the error message send time
+    errorFlag = 0; // resets the error flags
   }
 
-  // TODO periodic report
+  // Try to send a periodic report if there are no errors in the system
   if (!errorFlag) {
     sendText(periodicReport);
   }
@@ -87,14 +96,13 @@ void loop() {
   if (isProfileBtnRising()) {
     DEBUG_PRINTLN(F("> Profile increment"));
     incrementProfile();
-    
     sendText(profileSwitched);
-  
-    int prf = currentProfile;
-    setLEDs(0, prf == 0,
-               prf == 1,
-               prf == 2,
-               prf == 3);
+
+    // update the profile LEDs
+    setLEDs(-1, currentProfile == 0,
+                currentProfile == 1,
+                currentProfile == 2,
+                currentProfile == 3);
   }
 
   // TODO (stretch goal) receive SMS
@@ -109,5 +117,6 @@ void loop() {
   // display any error codes on the error LED
   blinkLED();
 
+  // tell the system to check for a next message recipient and send the message if they exist, see MessageSender
   sendMessageToNextRecipient();
 }

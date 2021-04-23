@@ -4,14 +4,16 @@
 class Boundry {
   public: 
 	char upper, lower;
+	
+	Boundry(int lower, int upper) {
+	  this->upper = upper;
+	  this->lower = lower;
+	}
 };
 
 extern Boundry profile[];
-
 extern char16_t currentProfile;
 
-
-Boundry defineBoundry(int upper, int lower);
 
 void incrementProfile();
 

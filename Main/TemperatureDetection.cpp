@@ -2,14 +2,16 @@
 #include "inc/Profile.hpp"
 #include "inc/HWIO.hpp"
 
-
+// Keeps track of the last read temperature from the last call to temp_sense()
 int temperatureChamber;
 
+// Returns if the current temperature read is within the lower and upper limits of the current profile, inclusive
 bool isTemperatureInsideBoundries() {
   return temperatureChamber >= profile[currentProfile].lower &&
          temperatureChamber <= profile[currentProfile].upper;
 }
 
+// Reads the temperature of the thermistor with a resistor value of 10k ohm
 void temp_sense()
 {
   double Vo;
@@ -30,6 +32,6 @@ void temp_sense()
   double denominator = 1.0/T0 + (1.0/beta)*log(R2/R0);
   temperatureChamber = 1.0/denominator - 273.0;
 
-  
-  DEBUG_PRINT(F("vin=")); DEBUG_PRINTLN(Vo);
+  // print out the raw voltage read by the termistor
+//  DEBUG_PRINT(F("vin=")); DEBUG_PRINTLN(Vo);
 }
